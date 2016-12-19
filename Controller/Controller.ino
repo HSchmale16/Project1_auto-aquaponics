@@ -1,3 +1,5 @@
+#include <OneWire.h>
+
 struct CommandAction {
     String code;
     void (*action)();
