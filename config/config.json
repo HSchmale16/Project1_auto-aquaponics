@@ -1,6 +1,6 @@
 {
     "serial": {
-        "baudrate": 57600,
-        "filename": "/dev/ttyUSB0"
+        "baudrate": 9600,
+        "filename": "/dev/ttyACM1"
     }
 }

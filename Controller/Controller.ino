@@ -1,4 +1,5 @@
-#include <OneWire.h>
+#include <Wire.h>
+
 
 /**
  * Defines an action that the machine can take.
@@ -20,11 +21,15 @@ const CommandAction ACTIONS[] = {
 const int ACTION_COUNT = sizeof(ACTIONS) / sizeof(CommandAction); 
 
 void setup() {
-    Serial.begin(54600);
+    Serial.begin(9600);
 }
 
 
 void loop() {
+    if(!Serial.available()){
+        return;
+    }
+    delay(50);
     String cmd;
     // while the serial is available append the current byte
     while(Serial.available()) {
@@ -33,8 +38,9 @@ void loop() {
             Serial.read();
             break;
         }
-        cmd += Serial.read(); 
+        cmd += (char)Serial.read(); 
     }
+    //Serial.println(cmd);
     // Search through possible actions and execute that action on find
     for(byte i = 0; i < ACTION_COUNT; i++){
         if(cmd.equals(ACTIONS[i].code)) {

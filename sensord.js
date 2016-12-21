@@ -12,6 +12,6 @@ var port = new SerialPort(config.serial.filename, {
     parser: SerialPort.parsers.readline('\n')
 });
 
-
+port.on("data", console.log);
 
 

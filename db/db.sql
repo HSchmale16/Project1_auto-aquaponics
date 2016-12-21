@@ -19,3 +19,20 @@ CREATE TABLE IF NOT EXISTS Readings (
     reading         NUMBER,
     sensorId        INTEGER REFERENCES Sensors(id)
 );
+
+
+CREATE TABLE IF NOT EXISTS Actions (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    name            VARCHAR(24),
+    description     TEXT
+);
+
+CREATE TABLE IF NOT EXISTS ActionLog (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    actionId        INTEGER REFERENCES Actions(id),
+    ts              TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
