@@ -5,7 +5,7 @@
  */
 
 var SerialPort = require('serialport');
-var config = require('./config/config.json');
+var config = require('./config/config.json'); 
 
 var port = new SerialPort(config.serial.filename, {
     baudRate: config.serial.baudrate,
