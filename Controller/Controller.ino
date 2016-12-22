@@ -1,5 +1,15 @@
+#include <SimpleDHT.h>
 #include <Wire.h>
 
+/**
+ * AutoAquaponics Sensor Controller
+ * Henry J Schmale
+ * December 21, 2016
+ *
+ * Handles the reading and controlling of the sensors and relays
+ * attached to the arduino. The NUC controls the arduino via
+ * a serial port. 
+ */
 
 /**
  * Defines an action that the machine can take.
@@ -21,6 +31,9 @@ const CommandAction ACTIONS[] = {
     {"rdAirTm", readAirThermometer}
 };
 const int ACTION_COUNT = sizeof(ACTIONS) / sizeof(CommandAction); 
+const int pinDHT11 = 2;
+SimpleDHT11 dht11;
+
 
 void setup() {
     Serial.begin(9600);
@@ -61,11 +74,21 @@ void readWaterThermometer() {
 }
 
 void readAirThermometer() {
-    Serial.println(0);
+    byte temp = 0, humidity = 0;
+    if(dht11.read(pinDHT11, &temp, &humidity, NULL)) {
+        Serial.println(0);
+        return;
+    }
+    Serial.println((int) temp);
 }
 
 void readHumidity() {
-    Serial.println(0);
+    byte temp = 0, humidity = 0;
+    if(dht11.read(pinDHT11, &temp, &humidity, NULL)) {
+        Serial.println(0);
+        return;
+    }
+    Serial.println((int) humidity);
 }
 
 void readWaterLevel() {
