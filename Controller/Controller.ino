@@ -1,5 +1,6 @@
+#include <OneWire.h>
+#include <DallasTemperature.h>
 #include <SimpleDHT.h>
-#include <Wire.h>
 
 /**
  * AutoAquaponics Sensor Controller
@@ -30,13 +31,32 @@ const CommandAction ACTIONS[] = {
     {"rdHumid", readHumidity},
     {"rdAirTm", readAirThermometer}
 };
+// Total Number of Possible Actions
 const int ACTION_COUNT = sizeof(ACTIONS) / sizeof(CommandAction); 
+
+// Define the pins used
 const int pinDHT11 = 2;
+const int ONE_WIRE_BUS = 5;
+const int pinTrigger = 12;
+const int pinEcho = 11;
+
+
+/* Temperature and Humidity Sensor
+ */
 SimpleDHT11 dht11;
 
+/* Setup water temperature sensor
+ */
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
 
 void setup() {
     Serial.begin(9600);
+    // setup the various sensors on the OneWire bus
+    sensors.begin();
+    // setup the pins for the echo sensor.
+    pinMode(pinTrigger, OUTPUT);
+    pinMode(pinEcho, INPUT);
 }
 
 
@@ -65,14 +85,15 @@ void loop() {
     }
 }
 
-void togglePump() {
-    Serial.println(0);    
-}
-
+/* Read the water temperature by using a DST18B20 Temperature Sensor
+ */
 void readWaterThermometer() {
-    Serial.println(0);
+    sensors.requestTemperatures();
+    Serial.println(sensors.getTempCByIndex(0));
 }
 
+/* Read the air temperature using a DHT11 Sensor
+ */
 void readAirThermometer() {
     byte temp = 0, humidity = 0;
     if(dht11.read(pinDHT11, &temp, &humidity, NULL)) {
@@ -82,6 +103,8 @@ void readAirThermometer() {
     Serial.println((int) temp);
 }
 
+/* Read the humidity using a DHT11 Sensor
+ */
 void readHumidity() {
     byte temp = 0, humidity = 0;
     if(dht11.read(pinDHT11, &temp, &humidity, NULL)) {
@@ -98,3 +121,8 @@ void readWaterLevel() {
 void toggleFeeder() {
     Serial.println(0);
 }
+
+void togglePump() {
+    Serial.println(0);    
+}
+
