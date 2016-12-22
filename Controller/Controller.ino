@@ -13,10 +13,12 @@ struct CommandAction {
 
 // All possible actions that the machine can take.
 const CommandAction ACTIONS[] = {
-    {"togPump", togglePump},
-    {"readThm", readThermometer},
-    {"readWLV", readWaterLevel},
-    {"togFeed", toggleFeeder}
+    {"tCiPump", togglePump},
+    {"rWatThm", readWaterThermometer},
+    {"rdWaLvl", readWaterLevel},
+    {"tFeeder", toggleFeeder},
+    {"rdHumid", readHumidity},
+    {"rdAirTm", readAirThermometer}
 };
 const int ACTION_COUNT = sizeof(ACTIONS) / sizeof(CommandAction); 
 
@@ -54,7 +56,15 @@ void togglePump() {
     Serial.println(0);    
 }
 
-void readThermometer() {
+void readWaterThermometer() {
+    Serial.println(0);
+}
+
+void readAirThermometer() {
+    Serial.println(0);
+}
+
+void readHumidity() {
     Serial.println(0);
 }
 
