@@ -1,6 +1,15 @@
 {
     "serial": {
         "baudrate": 9600,
-        "filename": "/dev/ttyACM1"
+        "filename": "/dev/ttyACM0"
+    },
+    "msgq": {
+        "reqAction": "sensor_read_queue",
+        "recvSensor": "sensor_write_queue"
+    },
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379,
+        "ns": "rsmq"
     }
 }
