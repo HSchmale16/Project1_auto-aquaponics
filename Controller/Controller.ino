@@ -57,10 +57,15 @@ void setup() {
     // setup the pins for the echo sensor.
     pinMode(pinTrigger, OUTPUT);
     pinMode(pinEcho, INPUT);
-}
-
-
-void loop() {
+    
+    // setup relay pins
+    for(int rp = 45; rp <= 53; rp++)
+        pinMode(rp, OUTPUT);
+    digitalWrite(45, HIGH);
+     
+}   
+    
+ void loop() {
     if(!Serial.available()){
         return;
     }
