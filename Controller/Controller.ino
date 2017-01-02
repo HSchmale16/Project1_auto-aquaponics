@@ -42,6 +42,7 @@ const int pinEcho = 11;
 const int RELAY_BOARD_LOWER = 14;
 const int RELAY_BOARD_UPPER = 22;
 const int PIN_PUMP = RELAY_BOARD_LOWER + 1;
+const int PIN_FEEDER = RELAY_BOARD_LOWER + 2;
 
  /* Temperature and Humidity Sensor
  */
@@ -126,15 +127,19 @@ void readWaterLevel() {
 }
 
 void toggleFeeder() {
-    Serial.println(0);
+    // invert digitalRead to flip-flop
+    digitalWrite(PIN_FEEDER, !digitalRead(PIN_FEEDER));
+    // invert to show the correct state
+    Serial.println(!digitalRead(PIN_FEEDER));
 }
 
 // toggles the pump, and prints the current state of the pump after
 // toggling it.
 void togglePump() {
+    // flip-flop the current state of pin pump
+    digitalWrite(PIN_PUMP, !digitalRead(PIN_PUMP));
     // the digitalRead needs to be inverted to be in standard notion
     // because of the pull down on the pins.
-    digitalWrite(PIN_PUMP, !digitalRead(PIN_PUMP));
     Serial.println(!digitalRead(PIN_PUMP));
 }
 
