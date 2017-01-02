@@ -4,8 +4,8 @@
         "filename": "/dev/ttyACM0"
     },
     "msgq": {
-        "reqAction": "sensor_read_queue",
-        "recvSensor": "sensor_write_queue"
+        "reqAction": "reqAction",
+        "recvSensor": "recvValues"
     },
     "redis": {
         "host": "127.0.0.1",
