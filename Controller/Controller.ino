@@ -39,11 +39,11 @@ const int pinDHT11 = 2;
 const int ONE_WIRE_BUS = 5;
 const int pinTrigger = 12;
 const int pinEcho = 11;
-const int PIN_PUMP = 46;
-const int RELAY_BOARD_LOWER = 45;
-const int RELAY_BOARD_UPPER = 53;
+const int RELAY_BOARD_LOWER = 14;
+const int RELAY_BOARD_UPPER = 22;
+const int PIN_PUMP = RELAY_BOARD_LOWER + 1;
 
-/* Temperature and Humidity Sensor
+ /* Temperature and Humidity Sensor
  */
 SimpleDHT11 dht11;
 
@@ -82,7 +82,7 @@ void setup() {
         }
         cmd += (char)Serial.read(); 
     }
-    //Serial.println(cmd);
+    Serial.println(cmd);
     // Search through possible actions and execute that action on find
     for(byte i = 0; i < ACTION_COUNT; i++){
         if(cmd.equals(ACTIONS[i].code)) {
@@ -129,8 +129,13 @@ void toggleFeeder() {
     Serial.println(0);
 }
 
+// toggles the pump, and prints the current state of the pump after
+// toggling it.
 void togglePump() {
+    // the digitalRead needs to be inverted to be in standard notion
+    // because of the pull down on the pins.
     digitalWrite(PIN_PUMP, !digitalRead(PIN_PUMP));
     Serial.println(!digitalRead(PIN_PUMP));
 }
+
 
