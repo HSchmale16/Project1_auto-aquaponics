@@ -39,7 +39,9 @@ const int pinDHT11 = 2;
 const int ONE_WIRE_BUS = 5;
 const int pinTrigger = 12;
 const int pinEcho = 11;
-
+const int PIN_PUMP = 46;
+const int RELAY_BOARD_LOWER = 45;
+const int RELAY_BOARD_UPPER = 53;
 
 /* Temperature and Humidity Sensor
  */
@@ -59,10 +61,10 @@ void setup() {
     pinMode(pinEcho, INPUT);
     
     // setup relay pins
-    for(int rp = 45; rp <= 53; rp++)
+    for(int rp = RELAY_BOARD_LOWER; rp <= RELAY_BOARD_UPPER;  rp++){
         pinMode(rp, OUTPUT);
-    digitalWrite(45, HIGH);
-     
+        digitalWrite(rp, HIGH);
+    }
 }   
     
  void loop() {
@@ -128,6 +130,7 @@ void toggleFeeder() {
 }
 
 void togglePump() {
-    Serial.println(0);    
+    digitalWrite(PIN_PUMP, !digitalRead(PIN_PUMP));
+    Serial.println(!digitalRead(PIN_PUMP));
 }
 
