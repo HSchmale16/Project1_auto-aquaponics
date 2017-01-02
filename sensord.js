@@ -5,7 +5,7 @@
  * Henry J Schmale
  * December 19, 2016
  */
-
+require('json-comments');
 var SerialPort = require('serialport');
 var RedisSMQ = require('rsmq');
 var config = require('./config/config.json'); 
