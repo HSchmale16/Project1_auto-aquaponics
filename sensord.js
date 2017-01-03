@@ -14,7 +14,7 @@ var rsmq = new RedisSMQ(config.redis);
 rsmq.createQueue({qname: config.msgq.reqAction}, cb_createQueue);
 rsmq.createQueue({qname: config.msgq.recvSensor}, cb_createQueue);
 
-setInterval(recvMsg, 1000);
+setInterval(recvMsg, 100);
 
 
 var port = new SerialPort(config.serial.filename, {
@@ -38,7 +38,6 @@ function cb_createQueue(err, resp) {
 function cb_recvMsg(err, resp) {
     if(resp.id){
         console.log('msg recv.', resp);
-    }else{
-        console.log('no msg for me');
+        port.write(resp.message + '\n');
     }
 }

@@ -1,7 +1,7 @@
 {
     "serial": {
         "baudrate": 9600,
-        "filename": "/dev/ttyACM0"
+        "filename": "/dev/ttyACM2"
     },
     "msgq": {
         "reqAction": "reqAction",

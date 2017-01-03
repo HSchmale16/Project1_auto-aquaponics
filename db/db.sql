@@ -25,9 +25,12 @@ CREATE TABLE IF NOT EXISTS Readings (
 
 CREATE TABLE IF NOT EXISTS Actions (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    name            VARCHAR(24),
+    name            VARCHAR(24) UNIQUE,
     description     TEXT
 );
+
+INSERT INTO Actions(name, description) VALUES
+    ('toggle circulation pump', 'toggling of the primary circulation pump'),    ('toggle feeder', 'toggles the feeder on or off');
 
 CREATE TABLE IF NOT EXISTS ActionLog (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,

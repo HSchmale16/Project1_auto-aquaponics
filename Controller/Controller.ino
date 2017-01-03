@@ -72,8 +72,9 @@ void setup() {
     if(!Serial.available()){
         return;
     }
+    // wait for bytes to arrive
     delay(50);
-    String cmd;
+    String cmd = "";
     // while the serial is available append the current byte
     while(Serial.available()) {
         // perform a chomp operation
@@ -83,10 +84,11 @@ void setup() {
         }
         cmd += (char)Serial.read(); 
     }
-    Serial.println(cmd);
     // Search through possible actions and execute that action on find
     for(byte i = 0; i < ACTION_COUNT; i++){
         if(cmd.equals(ACTIONS[i].code)) {
+            Serial.print(cmd);
+            Serial.print(' ');
             ACTIONS[i].action();
             break;
         }
