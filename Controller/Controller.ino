@@ -27,7 +27,6 @@ const CommandAction ACTIONS[] = {
     {"tCiPump", togglePump},
     {"rWatThm", readWaterThermometer},
     {"rdWaLvl", readWaterLevel},
-    {"tFeeder", toggleFeeder},
     {"rdHumid", readHumidity},
     {"rdAirTm", readAirThermometer}
 };
@@ -126,13 +125,6 @@ void readHumidity() {
 
 void readWaterLevel() {
     Serial.println(0);
-}
-
-void toggleFeeder() {
-    // invert digitalRead to flip-flop
-    digitalWrite(PIN_FEEDER, !digitalRead(PIN_FEEDER));
-    // invert to show the correct state
-    Serial.println(!digitalRead(PIN_FEEDER));
 }
 
 // toggles the pump, and prints the current state of the pump after
