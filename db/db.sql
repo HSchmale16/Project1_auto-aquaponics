@@ -4,15 +4,16 @@
 CREATE TABLE IF NOT EXISTS Sensors (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
     name            VARCHAR(24) UNIQUE,
+    lookUpCode      VARCHAR(7) UNIQUE,
     description     TEXT,
     units           VARCHAR(12)
 );
 
-INSERT INTO Sensors (name, description, units) VALUES 
-    ('water thermometer', 'reads the water temperature', 'Celsius'),
-    ('water level', 'reads the current waterlevel using an ultrasonic sensor', 'centimeters'),
-    ('humidity', 'reads the relative humidity of the air', 'Percent'),
-    ('air temperature', 'reads the current air temperature', 'Celsius')
+INSERT INTO Sensors (name, description, units, lookUpCode) VALUES 
+    ('water thermometer', 'reads the water temperature', 'Celsius', 'rWatThm'),
+    ('water level', 'reads the current waterlevel using an ultrasonic sensor', 'centimeters', 'rdWatLvl'),
+    ('humidity', 'reads the relative humidity of the air', 'Percent', 'rdHumid'),
+    ('air temperature', 'reads the current air temperature', 'Celsius', 'rdAirTm')
     ;
 
 CREATE TABLE IF NOT EXISTS Readings (
