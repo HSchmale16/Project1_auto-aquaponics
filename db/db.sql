@@ -57,19 +57,26 @@ INNER JOIN (
 ) rm ON r.sensorId = rm.sensorId AND r.ts = rm.MaxDate
 JOIN Sensors s on s.id = r.sensorId;
 
+CREATE VIEW IF NOT EXISTS vSensorReadings AS
+SELECT
+    *
+FROM Readings r
+JOIN Sensors s ON s.id = r.sensorId;
 
+-- displays last 30 days of sensor readings
 CREATE VIEW IF NOT EXISTS vLast30DaysReadings AS
 SELECT *
 FROM
-	Readings as r
+	vSensorReadings as r
 WHERE
 	strftime('%s', r.ts) > strftime('%s', CURRENT_TIMESTAMP) - 2592000;
 
+-- Displays the last 7 days of sensor readings
 CREATE VIEW IF NOT EXISTS vLast7DaysReadings AS
 SELECT *
 FROM
-	Readings as r
+	vSensorReadings as r
 WHERE
 	strftime('%s', r.ts) > strftime('%s', CURRENT_TIMESTAMP) - 604800;
-	
+
 

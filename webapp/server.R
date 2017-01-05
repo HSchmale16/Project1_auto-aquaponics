@@ -1,23 +1,32 @@
-
-# This is the server logic for a Shiny web application.
-# You can find out more about building applications with Shiny here:
+# server.R
+# Webapp For Autoaquaponics
+# Allows users to view statistics about the system as it is running.
 #
-# http://shiny.rstudio.com
+# Author: Henry J Schmale
 #
 
 library(shiny)
+library(DBI)
+library(DT)
+
+con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
+
+loadLatestReadings <- function() {
+  NewestReadings <- as.data.frame(dbReadTable(con, "vNewestReadings"))
+}
+
+loadAllReadings <- function() {
+  AllReadings <- as.data.frame(dbReadTable(con, 'vSensorReadings'))
+  WaterTemp <- as.data.frame(AllReadings[AllReadings$sensorId == 1,])
+  WaterLvl <- as.data.frame(AllReadings[AllReadings$sensorId == 2,])
+  Humidity <- as.data.frame(AllReadings[AllReadings$sensorId == 3,])
+  AirTemp <- as.data.frame(AllReadings[AllReadings$sensorId == 4,])
+}
 
 shinyServer(function(input, output) {
-
-  output$distPlot <- renderPlot({
-
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
-
+  loadLatestReadings()
+  loadAllReadings()
+  output$NewReadings <- renderTable({
+    NewestReadings[,c("ts", "reading", "sensor", "units")]
   })
-
 })
