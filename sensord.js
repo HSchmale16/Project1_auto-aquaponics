@@ -25,7 +25,7 @@ var codes4db = {};
 config.actions.sensor.forEach(function(x){
     codes4db[x.name] = x.code;
 });
-console.log(codes4db);
+var validSerialCodes = config.actions.validSerial;
 
 var port = new SerialPort(config.serial.filename, {
     baudRate: config.serial.baudrate,
@@ -36,14 +36,18 @@ port.on("data", cb_HandleSerialData);
 
 function cb_HandleSerialData(data) {
     console.log(data);
-    var stmt = db.prepare(
-        "INSERT INTO Readings(sensorId, reading) VALUES (?, ?);"
-    );
+
     var fields = data.split(' ');
     if(codes4db[fields[0]]) {
+        var stmt = db.prepare(
+            "INSERT INTO Readings(sensorId, reading) VALUES (?, ?);"
+        );
         stmt.run(codes4db[fields[0]], fields[1]);
+        return;
     }
-
+    if(fields[0] === 'tCiPump'){
+        db.run("INSERT INTO ActionLog(actionId) VALUES (1)");
+    }
 }
 
 function recvMsg() {
@@ -60,6 +64,10 @@ function cb_createQueue(err, resp) {
 function cb_recvMsg(err, resp) {
     if(resp.id){
         console.log('msg recv.', resp);
-        port.write(resp.message + '\n');
+        if(validSerialCodes.indexOf(resp.message) !== -1)
+            port.write(resp.message + '\n');
+        else{
+            // handle alternate states like where we need to do blob counting for counting fish
+        }
     }
 }

@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS ActionLog (
     ts              TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE VIEW IF NOT EXISTS NewestReadings AS
+CREATE VIEW IF NOT EXISTS vNewestReadings AS
 SELECT
 	r.id,
 	r.ts,
@@ -56,4 +56,20 @@ INNER JOIN (
 	GROUP BY sensorId
 ) rm ON r.sensorId = rm.sensorId AND r.ts = rm.MaxDate
 JOIN Sensors s on s.id = r.sensorId;
+
+
+CREATE VIEW IF NOT EXISTS vLast30DaysReadings AS
+SELECT *
+FROM
+	Readings as r
+WHERE
+	strftime('%s', r.ts) > strftime('%s', CURRENT_TIMESTAMP) - 2592000;
+
+CREATE VIEW IF NOT EXISTS vLast7DaysReadings AS
+SELECT *
+FROM
+	Readings as r
+WHERE
+	strftime('%s', r.ts) > strftime('%s', CURRENT_TIMESTAMP) - 604800;
+	
 

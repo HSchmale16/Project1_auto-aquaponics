@@ -25,6 +25,16 @@
                 "name": "rdAirTm",
                 "code": 4
             }
+        ],
+        "validSerial": [
+            "rWatThm",
+            "rWatLvl",
+            "rdHumid",
+            "rdAirTm",
+            "tCiPump"
+        ],
+        "otherCommands": [
+            "cntFish"
         ]
     },
     "redis": {
