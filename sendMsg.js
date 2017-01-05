@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 
+/**
+ * Sends a message via rsmq to the sensor daemon
+ * Henry J Schmale
+ * January 4, 2017
+ */
+
 require('json-comments');
 var RedisSMQ = require('rsmq');
 var config = require('./config/config.json');
 
 var rsmq = new RedisSMQ(config.redis);
-
-console.log(process.argv);
 
 rsmq.sendMessage({
     qname: config.msgq.reqAction,
