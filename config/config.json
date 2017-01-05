@@ -1,11 +1,31 @@
 {
     "serial": {
         "baudrate": 9600,
-        "filename": "/dev/ttyACM0"
+        "filename": "/dev/ttyACM2"
     },
     "msgq": {
         "reqAction": "reqAction",
         "recvSensor": "recvValues"
+    },
+    "actions": {
+        "sensor": [
+            {
+                "name": "rWatThm",
+                "code": 1
+            },
+            {
+                "name": "rWatLvl",
+                "code": 2
+            },
+            {
+                "name": "rdHumid",
+                "code": 3
+            },
+            {
+                "name": "rdAirTm",
+                "code": 4
+            }
+        ]
     },
     "redis": {
         "host": "127.0.0.1",

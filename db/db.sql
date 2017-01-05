@@ -4,16 +4,15 @@
 CREATE TABLE IF NOT EXISTS Sensors (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
     name            VARCHAR(24) UNIQUE,
-    lookUpCode      VARCHAR(7) UNIQUE,
     description     TEXT,
     units           VARCHAR(12)
 );
 
-INSERT INTO Sensors (name, description, units, lookUpCode) VALUES 
-    ('water thermometer', 'reads the water temperature', 'Celsius', 'rWatThm'),
-    ('water level', 'reads the current waterlevel using an ultrasonic sensor', 'centimeters', 'rdWatLvl'),
-    ('humidity', 'reads the relative humidity of the air', 'Percent', 'rdHumid'),
-    ('air temperature', 'reads the current air temperature', 'Celsius', 'rdAirTm')
+INSERT INTO Sensors (name, description, units) VALUES
+    ('water thermometer', 'reads the water temperature', 'Celsius'),
+    ('water level', 'reads the current waterlevel using an ultrasonic sensor', 'centimeters'),
+    ('humidity', 'reads the relative humidity of the air', 'Percent'),
+    ('air temperature', 'reads the current air temperature', 'Celsius')
     ;
 
 CREATE TABLE IF NOT EXISTS Readings (
@@ -31,7 +30,7 @@ CREATE TABLE IF NOT EXISTS Actions (
 );
 
 INSERT INTO Actions(name, description) VALUES
-    ('toggle circulation pump', 'toggling of the primary circulation pump'),    ('toggle feeder', 'toggles the feeder on or off');
+    ('toggle circulation pump', 'toggling of the primary circulation pump');
 
 CREATE TABLE IF NOT EXISTS ActionLog (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,6 +38,22 @@ CREATE TABLE IF NOT EXISTS ActionLog (
     ts              TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
-
+CREATE VIEW IF NOT EXISTS NewestReadings AS
+SELECT
+	r.id,
+	r.ts,
+	r.sensorId,
+	r.reading,
+	s.name as sensor,
+	s.units
+FROM Readings r
+INNER JOIN (
+	SELECT
+		max(ts) as MaxDate,
+		sensorId
+	FROM
+		Readings as r
+	GROUP BY sensorId
+) rm ON r.sensorId = rm.sensorId AND r.ts = rm.MaxDate
+JOIN Sensors s on s.id = r.sensorId;
 
