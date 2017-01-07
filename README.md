@@ -1,4 +1,4 @@
-\# Project 1 - Automated Aquaponics
+# Project 1 - Automated Aquaponics
 A fully automated aquaponics system monitoring temperature and other
 parameters. This is my project 1 for Harrisburg University.
 
@@ -28,6 +28,6 @@ This section describes the layout of hardware in the project
             |                                   --- Lights
             |
             \
-             -------- WebCam          
- 
+             -------- WebCam
+
 
