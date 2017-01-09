@@ -6,21 +6,32 @@
 library(shiny)
 library(DT)
 
+
 shinyUI(fluidPage(
 
   # Application title
-  titlePanel("Automated Aquaponics"),
-  
-  sidebarLayout(
-    sidebarPanel(
-      radioButtons("timerange", label=h3("Time Period"),
-                   choices = list(
-                     "All Time" = 1, "Last 7 Days" = 2, "Last 30 Days" = 3
-                   ),
-                   selected = 0)
-    ),
-
-    mainPanel(
+  titlePanel("Automated Aquaponics Dashboard"),
+  mainPanel(
+    tabsetPanel(
+      # Panel Displaying all of the plots with a time
+      # range selection
+      tabPanel("Plots", sidebarLayout(
+        sidebarPanel(
+          radioButtons(
+            "timerange", "Time Range To Display",
+            choices = c(
+              "All Time" = 'vSensorReadings',
+              "Last 30 Days" = 'vLast30DaysReadings',
+              "Last 7 Days" = 'vLast7DaysReadings'
+            ),
+            selected = 'Last 7 Days'
+          )
+        ),
+        mainPanel(
+          verbatimTextOutput('text'),
+          tableOutput('NewReadings')
+        )
+      ))
     )
   )
 ))

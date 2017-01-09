@@ -15,18 +15,27 @@ loadLatestReadings <- function() {
   NewestReadings <- as.data.frame(dbReadTable(con, "vNewestReadings"))
 }
 
-loadAllReadings <- function() {
-  AllReadings <- as.data.frame(dbReadTable(con, 'vSensorReadings'))
-  WaterTemp <- as.data.frame(AllReadings[AllReadings$sensorId == 1,])
-  WaterLvl <- as.data.frame(AllReadings[AllReadings$sensorId == 2,])
-  Humidity <- as.data.frame(AllReadings[AllReadings$sensorId == 3,])
-  AirTemp <- as.data.frame(AllReadings[AllReadings$sensorId == 4,])
+loadAllReadings <- function(tbname = 'vSensorReadings') {
+  AllReadings <- data.frame(dbReadTable(con, tbname))
+  WaterTemp <- data.frame(AllReadings[AllReadings$sensorId == 1,])
+  WaterLvl <- data.frame(AllReadings[AllReadings$sensorId == 2,])
+  Humidity <- data.frame(AllReadings[AllReadings$sensorId == 3,])
+  AirTemp <- data.frame(AllReadings[AllReadings$sensorId == 4,])
+  return(list(AllReadings = AllReadings,
+              WaterTemp = WaterTemp,
+              WaterLvl = WaterLvl,
+              Humidity = Humidity,
+              AirTemp = AirTemp
+              )
+         )
 }
+
 
 shinyServer(function(input, output) {
   loadLatestReadings()
-  loadAllReadings()
+  readings <- loadAllReadings()
   output$NewReadings <- renderTable({
-    NewestReadings[,c("ts", "reading", "sensor", "units")]
+    readings$AllReadings[,c("ts", "reading", "name", "units")]
   })
+  output$text <- renderText(input$timerange)
 })
