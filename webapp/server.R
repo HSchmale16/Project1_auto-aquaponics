@@ -8,8 +8,15 @@
 library(shiny)
 library(DBI)
 library(DT)
+library(dplyr)
 
 con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
+toggleTable <- matrix(" ", nrow=2, ncol = 24,
+                      dimnames = list(
+                        c("Aquarium Lights", "Pump On"),
+                        seq.int(1, 24, 1)
+                      ))
+
 
 loadLatestReadings <- function() {
   NewestReadings <- as.data.frame(dbReadTable(con, "vNewestReadings"))
@@ -37,5 +44,18 @@ shinyServer(function(input, output) {
   output$NewReadings <- renderTable({
     readings$AllReadings[,c("ts", "reading", "name", "units")]
   })
+  output$schedule <- DT::renderDataTable({
+    datatable(toggleTable,
+              options = list(dom = 't',
+                             ordering = F),
+              selection = list(target = 'cell'),
+              class = 'cell-border compact') %>%
+                formatStyle(1:24, cursor = 'pointer')
+  })
+  
+  output$selectedInfo <- renderPrint({
+    input$schedule_cells_selected
+  })
+  
   output$text <- renderText(input$timerange)
 })
