@@ -45,8 +45,12 @@ function cb_HandleSerialData(data) {
         stmt.run(codes4db[fields[0]], fields[1]);
         return;
     }
-    if(fields[0] === 'tCiPump'){
+    if(fields[0] === 'tCiPump') {
         db.run("INSERT INTO ActionLog(actionId) VALUES (1)");
+    }else if(fields[0] === 'tAirPmp') {
+        db.run("INSERT INTO ActionLog(actionId) VALUES (2)");
+    }else if(fields[0] === 'tLights') {
+        db.run("INSERT INTO ActionLog(actionId) VALUES (3)");
     }
 }
 

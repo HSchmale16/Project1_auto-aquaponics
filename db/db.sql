@@ -30,7 +30,10 @@ CREATE TABLE IF NOT EXISTS Actions (
 );
 
 INSERT INTO Actions(name, description) VALUES
-    ('toggle circulation pump', 'toggling of the primary circulation pump');
+    ('toggle circulation pump', 'toggling of the primary circulation pump'),
+    ('toggle air pump', 'toggling of the airation pump'),
+    ('toggle lights', 'toggling of the tank lights')
+    ;
 
 CREATE TABLE IF NOT EXISTS ActionLog (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
