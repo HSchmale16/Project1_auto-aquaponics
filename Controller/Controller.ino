@@ -65,6 +65,8 @@ void setup() {
         pinMode(rp, OUTPUT);
         digitalWrite(rp, HIGH);
     }
+    digitalWrite(RELAY_BOARD_UPPER, LOW);
+
 }   
     
  void loop() {
