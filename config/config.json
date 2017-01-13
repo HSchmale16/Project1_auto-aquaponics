@@ -31,7 +31,9 @@
             "rWatLvl",
             "rdHumid",
             "rdAirTm",
-            "tCiPump"
+            "tCiPump",
+            "tLights",
+            "tAirPmp"
         ],
         "otherCommands": [
             "cntFish"

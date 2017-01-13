@@ -28,7 +28,9 @@ const CommandAction ACTIONS[] = {
     {"rWatThm", readWaterThermometer},
     {"rdWaLvl", readWaterLevel},
     {"rdHumid", readHumidity},
-    {"rdAirTm", readAirThermometer}
+    {"rdAirTm", readAirThermometer},
+    {"tLights", toggleLights},
+    {"tAirPmp", toggleAirPump}
 };
 // Total Number of Possible Actions
 const int ACTION_COUNT = sizeof(ACTIONS) / sizeof(CommandAction); 
@@ -41,7 +43,8 @@ const int pinEcho = 11;
 const int RELAY_BOARD_LOWER = 14;
 const int RELAY_BOARD_UPPER = 22;
 const int PIN_PUMP = RELAY_BOARD_LOWER + 1;
-const int PIN_FEEDER = RELAY_BOARD_LOWER + 2;
+const int PIN_LIGHTS = RELAY_BOARD_LOWER + 2;
+const int PIN_AIR_PUMP =  RELAY_BOARD_LOWER + 3;
 
  /* Temperature and Humidity Sensor
  */
@@ -139,4 +142,18 @@ void togglePump() {
     Serial.println(!digitalRead(PIN_PUMP));
 }
 
+void toggleLights() {
+    // flip-flop the current state of pin pump
+    digitalWrite(PIN_LIGHTS, !digitalRead(PIN_LIGHTS));
+    // the digitalRead needs to be inverted to be in standard notion
+    // because of the pull down on the pins.
+    Serial.println(!digitalRead(PIN_LIGHTS));
+}
 
+void toggleAirPump() {
+    // flip-flop the current state of pin pump
+    digitalWrite(PIN_AIR_PUMP, !digitalRead(PIN_AIR_PUMP));
+    // the digitalRead needs to be inverted to be in standard notion
+    // because of the pull down on the pins.
+    Serial.println(!digitalRead(PIN_AIR_PUMP));
+}
