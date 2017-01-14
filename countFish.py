@@ -6,5 +6,10 @@
 
 import cv2
 import numpy as np
+import json
 
-im = cv2.imread("blob.jpg", cv2.IMREAD_GRAYSCALE)
+with open('config/config.json', 'r') as f:
+    config = json.load(f)
+
+print(config)
+
