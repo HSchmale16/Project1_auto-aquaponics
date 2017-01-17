@@ -129,6 +129,8 @@ void readHumidity() {
 }
 
 void readWaterLevel() {
+    int startTime = millis();
+
     Serial.println(0);
 }
 
