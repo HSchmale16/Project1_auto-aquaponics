@@ -23,7 +23,8 @@ dashboardPage(
     tabsetPanel(
       tabPanel("Plots",
         plotOutput('WaterLvl'),
-        plotOutput('WaterTemp')
+        plotOutput('Temperature'),
+        plotOutput('Humidity')
       ),
       tabPanel("System Schedule Configuration",
         DT::dataTableOutput('schedule', width='100%')
