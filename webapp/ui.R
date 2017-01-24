@@ -5,37 +5,30 @@
 
 library(shiny)
 library(DT)
+library(shinydashboard)
 
-shinyUI(fluidPage(
-
-  # Application title
-  titlePanel("Automated Aquaponics Dashboard"),
-  mainPanel(
+dashboardPage(
+  dashboardHeader(title = 'Automated Aquaponics Dashboard'),
+  dashboardSidebar(
+    radioButtons(
+      "timerange", "Time Range To Display",
+      choices = c(
+        "All Time" = 'vSensorReadings',
+        "Last 30 Days" = 'vLast30DaysReadings',
+        "Last 7 Days" = 'vLast7DaysReadings'
+      )
+    )
+  ),
+  dashboardBody(
     tabsetPanel(
-      # Panel Displaying all of the plots with a time
-      # range selection
-      tabPanel("Plots", sidebarLayout(
-        sidebarPanel(
-          radioButtons(
-            "timerange", "Time Range To Display",
-            choices = c(
-              "All Time" = 'vSensorReadings',
-              "Last 30 Days" = 'vLast30DaysReadings',
-              "Last 7 Days" = 'vLast7DaysReadings'
-            ),
-            selected = 'vLast7DaysReadings'
-          )
-        ),
-        mainPanel(
-          verbatimTextOutput('text'),
-          tableOutput('NewReadings')
-        )
-      )),
-      # Tab for configuring pump and lights schedule
+      tabPanel("Plots"
+        
+      ),
       tabPanel("Schedule Configuration", mainPanel(
-        DT::dataTableOutput('schedule', width='100%'),
-        verbatimTextOutput('selectedInfo')
-      ))
+          DT::dataTableOutput('schedule', width='100%'),
+          verbatimTextOutput('selectedInfo')
+        )
+      )
     )
   )
-))
+)

@@ -11,9 +11,9 @@ library(DT)
 library(dplyr)
 
 con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
-toggleTable <- matrix(" ", nrow=2, ncol = 24,
+toggleTable <- matrix(" ", nrow=3, ncol = 24,
                       dimnames = list(
-                        c("Aquarium Lights", "Pump On"),
+                        c("Aquarium Lights", "Circulation Pump", "Air Pump"),
                         seq.int(1, 24, 1)
                       ))
 
@@ -28,8 +28,7 @@ loadAllReadings <- function(tbname = 'vSensorReadings') {
   WaterLvl <- data.frame(AllReadings[AllReadings$sensorId == 2,])
   Humidity <- data.frame(AllReadings[AllReadings$sensorId == 3,])
   AirTemp <- data.frame(AllReadings[AllReadings$sensorId == 4,])
-  return(list(AllReadings = AllReadings,
-              WaterTemp = WaterTemp,
+  return(list(WaterTemp = WaterTemp,
               WaterLvl = WaterLvl,
               Humidity = Humidity,
               AirTemp = AirTemp
@@ -40,9 +39,9 @@ loadAllReadings <- function(tbname = 'vSensorReadings') {
 
 shinyServer(function(input, output) {
   loadLatestReadings()
-  readings <- loadAllReadings()
   output$NewReadings <- renderTable({
-    readings$AllReadings[,c("ts", "reading", "name", "units")]
+    readings <- loadAllReadings(input$timerange)
+    readings$WaterTemp[,c("ts", "reading", "name", "units")]
   })
   output$schedule <- DT::renderDataTable({
     datatable(toggleTable,
