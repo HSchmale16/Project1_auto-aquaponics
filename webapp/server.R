@@ -9,6 +9,7 @@ library(shiny)
 library(DBI)
 library(DT)
 library(dplyr)
+library(ggplot2)
 
 con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
 toggleTable <- matrix(" ", nrow=3, ncol = 24,
@@ -38,11 +39,20 @@ loadAllReadings <- function(tbname = 'vSensorReadings') {
 
 
 shinyServer(function(input, output) {
-  loadLatestReadings()
-  output$NewReadings <- renderTable({
-    readings <- loadAllReadings(input$timerange)
-    readings$WaterTemp[,c("ts", "reading", "name", "units")]
-  })
+  data <- reactive(loadAllReadings(input$timerange))
+  
+  output$WaterLvl <- renderPlot(
+    ggplot(aes(x = ts, y = reading), data = data()$WaterLvl) 
+      + geom_line()
+      + ggtitle("Water Level")
+  )
+  
+  output$WaterTemp <- renderPlot(
+    ggplot(aes(x = ts, y = reading), data = data()$WaterTemp)
+      + geom_line()
+      + ggtitle("Water Temperature")
+  )
+  
   output$schedule <- DT::renderDataTable({
     datatable(toggleTable,
               options = list(dom = 't',
@@ -51,6 +61,4 @@ shinyServer(function(input, output) {
               class = 'cell-border compact') %>%
                 formatStyle(1:24, cursor = 'pointer')
   })
-  
-  output$text <- renderText(input$timerange)
 })

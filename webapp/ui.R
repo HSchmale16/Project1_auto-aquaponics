@@ -21,12 +21,12 @@ dashboardPage(
   ),
   dashboardBody(
     tabsetPanel(
-      tabPanel("Plots"
-        
+      tabPanel("Plots",
+        plotOutput('WaterLvl'),
+        plotOutput('WaterTemp')
       ),
-      tabPanel("Schedule Configuration", mainPanel(
-          DT::dataTableOutput('schedule', width='100%')
-        )
+      tabPanel("System Schedule Configuration",
+        DT::dataTableOutput('schedule', width='100%')
       )
     )
   )
