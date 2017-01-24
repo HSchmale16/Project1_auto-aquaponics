@@ -25,8 +25,7 @@ dashboardPage(
         
       ),
       tabPanel("Schedule Configuration", mainPanel(
-          DT::dataTableOutput('schedule', width='100%'),
-          verbatimTextOutput('selectedInfo')
+          DT::dataTableOutput('schedule', width='100%')
         )
       )
     )

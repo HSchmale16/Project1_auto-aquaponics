@@ -52,9 +52,5 @@ shinyServer(function(input, output) {
                 formatStyle(1:24, cursor = 'pointer')
   })
   
-  output$selectedInfo <- renderPrint({
-    input$schedule_cells_selected
-  })
-  
   output$text <- renderText(input$timerange)
 })
