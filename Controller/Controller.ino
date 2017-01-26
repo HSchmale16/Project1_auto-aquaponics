@@ -32,6 +32,7 @@ const CommandAction ACTIONS[] = {
     {"tLights", toggleLights},
     {"tAirPmp", toggleAirPump}
 };
+
 // Total Number of Possible Actions
 const int ACTION_COUNT = sizeof(ACTIONS) / sizeof(CommandAction); 
 
