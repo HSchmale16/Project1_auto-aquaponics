@@ -27,7 +27,8 @@ dashboardPage(
         plotOutput('Humidity')
       ),
       tabPanel("System Schedule Configuration",
-        DT::dataTableOutput('schedule', width='100%')
+        DT::dataTableOutput('schedule', width='100%'),
+        verbatimTextOutput('selectedInfo')
       )
     )
   )

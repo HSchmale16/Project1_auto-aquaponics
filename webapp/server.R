@@ -12,12 +12,14 @@ library(dplyr)
 library(ggplot2)
 
 con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
+
+# this toggle table just creates a basic table that datatables 
+# understands and can use to create a selectable table.
 toggleTable <- matrix(" ", nrow=3, ncol = 24,
                       dimnames = list(
                         c("Aquarium Lights", "Circulation Pump", "Air Pump"),
                         seq.int(1, 24, 1)
                       ))
-
 
 loadLatestReadings <- function() {
   NewestReadings <- as.data.frame(dbReadTable(con, "vNewestReadings"))
@@ -45,17 +47,6 @@ loadAllReadings <- function(tbname = 'vSensorReadings') {
 shinyServer(function(input, output) {
   data <- reactive(loadAllReadings(input$timerange))
   
-  output$WaterLvl <- renderPlot(
-    ggplot(aes(x = ts, y = reading), data = data()$WaterLvl) 
-      + geom_line()
-      + ggtitle("Water Level")
-  )
-  
-  output$WaterTemp <- renderPlot(
-    ggplot(aes(x = ts, y = reading), data = data()$WaterTemp)
-      + geom_line()
-      + ggtitle("Water Temperature")
-  )
   
   output$schedule <- DT::renderDataTable({
     datatable(toggleTable,
@@ -64,5 +55,10 @@ shinyServer(function(input, output) {
               selection = list(target = 'cell'),
               class = 'cell-border compact') %>%
                 formatStyle(1:24, cursor = 'pointer')
+  })
+  output$selectedInfo <- renderPrint({
+    str(input$schedule_cells_selected)
+    cells <- data.frame(input$schedule_cells_selected)
+    dbWriteTable(con, 'Schedule', cells, overwrite = TRUE)
   })
 })

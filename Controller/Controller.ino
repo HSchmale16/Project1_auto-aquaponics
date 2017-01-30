@@ -1,6 +1,9 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
-#include <SimpleDHT.h>
+#include <Adafruit_Sensor.h>
+#include <DHT.h>
+
+#define DHTTYPE DHT11
 
 /**
  * AutoAquaponics Sensor Controller
@@ -37,7 +40,7 @@ const CommandAction ACTIONS[] = {
 const int ACTION_COUNT = sizeof(ACTIONS) / sizeof(CommandAction); 
 
 // Define the pins used
-const int pinDHT11 = 2;
+const int pinDHT11 = 6;
 const int ONE_WIRE_BUS = 5;
 const int pinTrigger = 12;
 const int pinEcho = 11;
@@ -49,7 +52,8 @@ const int PIN_AIR_PUMP =  RELAY_BOARD_LOWER + 3;
 
  /* Temperature and Humidity Sensor
  */
-SimpleDHT11 dht11;
+DHT dht(pinDHT11, DHTTYPE);
+
 
 /* Setup water temperature sensor
  */
@@ -63,7 +67,9 @@ void setup() {
     // setup the pins for the echo sensor.
     pinMode(pinTrigger, OUTPUT);
     pinMode(pinEcho, INPUT);
-    
+   
+    dht.begin();
+ 
     // setup relay pins
     for(int rp = RELAY_BOARD_LOWER; rp <= RELAY_BOARD_UPPER;  rp++){
         pinMode(rp, OUTPUT);
@@ -110,23 +116,13 @@ void readWaterThermometer() {
 /* Read the air temperature using a DHT11 Sensor
  */
 void readAirThermometer() {
-    byte temp = 0, humidity = 0;
-    if(dht11.read(pinDHT11, &temp, &humidity, NULL)) {
-        Serial.println(0);
-        return;
-    }
-    Serial.println((int) temp);
+    Serial.println(dht.readTemperature());
 }
 
 /* Read the humidity using a DHT11 Sensor
  */
 void readHumidity() {
-    byte temp = 0, humidity = 0;
-    if(dht11.read(pinDHT11, &temp, &humidity, NULL)) {
-        Serial.println(0);
-        return;
-    }
-    Serial.println((int) humidity);
+    Serial.println(dht.readHumidity());
 }
 
 void readWaterLevel() {

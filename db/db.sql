@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS Readings (
     reading         NUMBER,
     sensorId        INTEGER REFERENCES Sensors(id)
 );
-
+CREATE UNIQUE INDEX ux_SensorTs ON Readings(ts, sensorId);
 
 CREATE TABLE IF NOT EXISTS Actions (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -82,4 +82,11 @@ FROM
 WHERE
 	strftime('%s', r.ts) > strftime('%s', CURRENT_TIMESTAMP) - 604800;
 
-
+-- selects the number of readings from each sensor with name
+CREATE VIEW IF NOT EXISTS vReadingsCount AS
+SELECT
+    sensorId,
+    name,
+    COUNT(*) as totReadings
+FROM vSensorReadings
+GROUP BY sensorId
