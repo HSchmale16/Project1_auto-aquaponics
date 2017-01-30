@@ -3,10 +3,10 @@
 
 while true
 do
-    for s in rdAirTm rdHumid
+    for s in rdAirTm rdHumid rWatThm rWaLvl
     do
         ./sendMsg.js $s
-        echo $s
+        echo Request Read From Sensor $s
         sleep 1
     done
 done

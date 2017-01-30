@@ -27,13 +27,13 @@ struct CommandAction {
 
 // All possible actions that the machine can take.
 const CommandAction ACTIONS[] = {
-    {"tCiPump", togglePump},
     {"rWatThm", readWaterThermometer},
     {"rdWaLvl", readWaterLevel},
     {"rdHumid", readHumidity},
     {"rdAirTm", readAirThermometer},
     {"tLights", toggleLights},
-    {"tAirPmp", toggleAirPump}
+    {"tAirPmp", toggleAirPump},
+    {"tCiPump", togglePump},
 };
 
 // Total Number of Possible Actions
