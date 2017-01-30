@@ -1,16 +1,10 @@
 #!/bin/bash
 while true
 do
-    case $(($RANDOM % 3)) in
-    0)
-        ./sendMsg.js tCiPump
-        ;;
-    1)
-        ./sendMsg.js tLights
-        ;;
-    2)
-        ./sendMsg.js tAirPmp
-        ;;
-    esac
-    sleep 1
+    for s in tCiPump tLIghts tAirPump
+    do
+        echo "Sensor $s"
+        ./sendMsg.js $s
+        sleep 1
+    done
 done

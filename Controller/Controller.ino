@@ -26,6 +26,7 @@ struct CommandAction {
 };
 
 // All possible actions that the machine can take.
+// sensor readings are more common than toggling actions
 const CommandAction ACTIONS[] = {
     {"rWatThm", readWaterThermometer},
     {"rdWaLvl", readWaterLevel},
