@@ -47,12 +47,13 @@ loadAllReadings <- function(tbname = 'vSensorReadings') {
 shinyServer(function(input, output) {
   data <- reactive(loadAllReadings(input$timerange))
   
-  
   output$schedule <- DT::renderDataTable({
     datatable(toggleTable,
               options = list(dom = 't',
                              ordering = F),
-              selection = list(target = 'cell'),
+              selection = list(target = 'cell',
+                               selected = data.matrix(dbReadTable(con, 'Schedule'),
+                                                      rownames.force = NA)),
               class = 'cell-border compact') %>%
                 formatStyle(1:24, cursor = 'pointer')
   })

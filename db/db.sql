@@ -41,6 +41,10 @@ CREATE TABLE IF NOT EXISTS ActionLog (
     ts              TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE Schedule (
+    "X1" INTEGER, X2 INTEGER
+);
+
 CREATE VIEW IF NOT EXISTS vNewestReadings AS
 SELECT
 	r.id,
@@ -89,4 +93,4 @@ SELECT
     name,
     COUNT(*) as totReadings
 FROM vSensorReadings
-GROUP BY sensorId
+GROUP BY sensorId;
