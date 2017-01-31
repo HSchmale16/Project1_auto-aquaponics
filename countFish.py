@@ -7,9 +7,9 @@
 import cv2
 import numpy as np
 import json
+import sys
 
 with open('config/config.json', 'r') as f:
     config = json.load(f)
 
-print(config)
 
