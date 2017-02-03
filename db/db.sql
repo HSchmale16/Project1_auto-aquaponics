@@ -46,10 +46,13 @@ CREATE TABLE Schedule (
     X1 INTEGER REFERENCES Actions(id),
     X2 INTEGER
 );
-
+CREATE UNIQUE INDEX ux_Schedule ON Schedule(X1, X2);
+-- create an initial entry for the database.
 INSERT INTO Schedule VALUES (1, 1);
 
 
+-- Retrieves the Newest Readings for All Sensors that currently exists as a
+-- sensor
 CREATE VIEW IF NOT EXISTS vNewestReadings AS
 SELECT
 	r.id,
@@ -99,3 +102,29 @@ SELECT
     COUNT(*) as totReadings
 FROM vSensorReadings
 GROUP BY sensorId;
+
+-- Generates a sequence between 1 and 24
+CREATE VIEW __hoursInDay AS
+WITH RECURSIVE
+	cnt(x) as (
+	SELECT 1
+	UNION ALL SELECT x + 1 from cnt
+	LIMIT 24
+)
+SELECT x FROM cnt;
+
+-- Describes the schedule statew
+CREATE VIEW vScheduleState AS
+SELECT
+	X1 as Action,
+	GROUP_CONCAT(X2, ' ') as hours,
+	1 as state
+FROM Schedule
+GROUP By X1
+UNION
+SELECT
+	X1 as Action,
+	(SELECT GROUP_CONCAT(x, ' ') FROM __hoursInDay WHERE x NOT IN (SELECT X2 FROM Schedule WHERE X1 = s2.X1)),
+	0 as state
+FROM Schedule s2
+GROUP BY X1;
