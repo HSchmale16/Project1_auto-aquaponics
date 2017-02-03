@@ -41,9 +41,14 @@ CREATE TABLE IF NOT EXISTS ActionLog (
     ts              TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- This table manages the scheduling of the various actions
 CREATE TABLE Schedule (
-    "X1" INTEGER, X2 INTEGER
+    X1 INTEGER REFERENCES Actions(id),
+    X2 INTEGER
 );
+
+INSERT INTO Schedule VALUES (1, 1);
+
 
 CREATE VIEW IF NOT EXISTS vNewestReadings AS
 SELECT

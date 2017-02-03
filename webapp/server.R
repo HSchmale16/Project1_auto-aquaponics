@@ -17,7 +17,7 @@ con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
 # understands and can use to create a selectable table.
 toggleTable <- matrix(" ", nrow=3, ncol = 24,
                       dimnames = list(
-                        c("Aquarium Lights", "Circulation Pump", "Air Pump"),
+                        c("Circulation Pump", "Air Pump", "Aquarium Lights"),
                         seq.int(1, 24, 1)
                       ))
 
