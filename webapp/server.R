@@ -11,7 +11,6 @@ library(DT)
 library(dplyr)
 library(ggplot2)
 
-con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
 
 # this toggle table just creates a basic table that datatables 
 # understands and can use to create a selectable table.
@@ -20,6 +19,8 @@ toggleTable <- matrix(" ", nrow=3, ncol = 24,
                         c("Circulation Pump", "Air Pump", "Aquarium Lights"),
                         seq.int(1, 24, 1)
                       ))
+
+con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
 
 loadLatestReadings <- function() {
   NewestReadings <- as.data.frame(dbReadTable(con, "vNewestReadings"))
@@ -35,10 +36,10 @@ loadAllReadings <- function(tbname = 'vSensorReadings') {
   colsToKeep <- c('ts', 'reading')
   
   
-  return(list(WaterTemp = WaterTemp,
-              WaterLvl = WaterLvl,
-              Humidity = Humidity,
-              AirTemp = AirTemp
+  return(list(WaterTemp = WaterTemp[,colsToKeep],
+              WaterLvl = WaterLvl[,colsToKeep],
+              Humidity = Humidity[,colsToKeep],
+              AirTemp = AirTemp[,colsToKeep]
               )
          )
 }
@@ -57,6 +58,23 @@ shinyServer(function(input, output) {
               class = 'cell-border compact') %>%
                 formatStyle(1:24, cursor = 'pointer')
   })
+  
+  output$pWaterLvl <- renderPlot({
+    ggplot(data()$WaterLvl, aes(x = ts)) + geom_point(aes(y = reading)) + ggtitle("Water Level")
+  })
+  
+  output$pAirTemp <- renderPlot({
+    ggplot(data()$AirTemp, aes(x = ts)) + geom_point(aes(y = reading)) + ggtitle("Air Temperature")
+  })
+  
+  output$pWaterTemp <- renderPlot({
+    ggplot(data()$WaterTemp, aes(x = ts)) + geom_point(aes(y = reading)) + ggtitle("Water Temperature")
+  })
+  
+  output$pHumidity <- renderPlot({
+    ggplot(data()$Humidity, aes(x = ts)) + geom_point(aes(y = reading)) + ggtitle("Humidity")
+  })
+  
   output$selectedInfo <- renderPrint({
     str(input$schedule_cells_selected)
     cells <- data.frame(input$schedule_cells_selected)
