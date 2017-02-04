@@ -74,10 +74,4 @@ shinyServer(function(input, output) {
   output$pHumidity <- renderPlot({
     ggplot(data()$Humidity, aes(x = ts)) + geom_point(aes(y = reading)) + ggtitle("Humidity")
   })
-  
-  output$selectedInfo <- renderPrint({
-    str(input$schedule_cells_selected)
-    cells <- data.frame(input$schedule_cells_selected)
-    dbWriteTable(con, 'Schedule', cells, overwrite = TRUE)
-  })
 })

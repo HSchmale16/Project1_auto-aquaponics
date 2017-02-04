@@ -23,6 +23,9 @@ dashboardPage(
     tabsetPanel(
       tabPanel("Plots",
         fluidRow(
+          # Place Value Boxes For Newest Readings Here
+        ),
+        fluidRow(
           plotOutput('pWaterLvl'),
           plotOutput('pHumidity')
         ),
@@ -32,9 +35,9 @@ dashboardPage(
         )
       ),
       tabPanel("System Schedule Configuration",
-        DT::dataTableOutput('schedule', width='100%'),
-        verbatimTextOutput('selectedInfo')
-      )
+        DT::dataTableOutput('schedule', width='100%')
+      ),
+      tabPanel("Constraints")
     )
   )
 )
