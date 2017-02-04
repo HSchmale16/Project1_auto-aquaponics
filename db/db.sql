@@ -128,3 +128,10 @@ SELECT
 	0 as state
 FROM Schedule s2
 GROUP BY X1;
+
+
+
+
+
+
+
