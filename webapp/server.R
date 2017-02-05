@@ -24,6 +24,7 @@ con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
 
 loadLatestReadings <- function() {
   NewestReadings <- as.data.frame(dbReadTable(con, "vNewestReadings"))
+  split(NewestReadings, NewestReadings$sensor)
 }
 
 loadAllReadings <- function(tbname = 'vSensorReadings') {
@@ -47,6 +48,7 @@ loadAllReadings <- function(tbname = 'vSensorReadings') {
 
 shinyServer(function(input, output) {
   data <- reactive(loadAllReadings(input$timerange))
+  latestReadings <- loadLatestReadings()
   
   output$schedule <- DT::renderDataTable({
     datatable(toggleTable,
@@ -59,6 +61,36 @@ shinyServer(function(input, output) {
                 formatStyle(1:24, cursor = 'pointer')
   })
   
+  # Do the value boxes  
+  output$bHumidity <- renderValueBox({
+    infoBox(
+      latestReadings$humidity$reading, 
+      title = 'Humidity'
+    )
+  })
+  
+  output$bAirTemp <- renderValueBox({
+    infoBox(
+      latestReadings$`air temperature`$reading,
+      title = 'Air Temperature'
+    )
+  })
+  
+  output$bWaterTemp <- renderValueBox({
+    infoBox(
+      latestReadings$`water thermometer`$reading,
+      title = 'Water Temperature'
+    )
+  })
+  
+  output$bWaterLevel <- renderValueBox({
+    infoBox(
+      latestReadings$`water level`$reading,
+      title = 'Water Level'
+    )
+  })
+  
+  # Do Plots
   output$pWaterLvl <- renderPlot({
     ggplot(data()$WaterLvl, aes(x = ts)) + geom_point(aes(y = reading)) + ggtitle("Water Level")
   })

@@ -24,14 +24,22 @@ dashboardPage(
       tabPanel("Plots",
         fluidRow(
           # Place Value Boxes For Newest Readings Here
+          infoBoxOutput('bHumidity', 3),
+          infoBoxOutput('bAirTemp', 3),
+          infoBoxOutput('bWaterTemp', 3),
+          infoBoxOutput('bWaterLevel', 3)
         ),
         fluidRow(
-          plotOutput('pWaterLvl'),
-          plotOutput('pHumidity')
+          splitLayout(cellWidths = c('49%', '49%'),
+            plotOutput('pWaterLvl'),
+            plotOutput('pHumidity')
+          )
         ),
         fluidRow(
-          plotOutput('pWaterTemp'),
-          plotOutput('pAirTemp')
+          splitLayout(cellWidths = c('49%', '49%'),
+            plotOutput('pWaterTemp'),
+            plotOutput('pAirTemp')
+          )
         )
       ),
       tabPanel("System Schedule Configuration",

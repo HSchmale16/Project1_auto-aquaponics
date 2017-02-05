@@ -58,7 +58,7 @@ SELECT
 	r.id,
 	r.ts,
 	r.sensorId,
-	r.reading,
+	r.reading || ' ' || s.units as reading,
 	s.name as sensor,
 	s.units
 FROM Readings r
