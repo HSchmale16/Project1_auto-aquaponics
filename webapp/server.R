@@ -29,6 +29,9 @@ loadLatestReadings <- function() {
 
 loadAllReadings <- function(tbname = 'vSensorReadings') {
   AllReadings <- data.frame(dbReadTable(con, tbname))
+  AllReadings$ts <- as.POSIXct(AllReadings$ts, format = '%Y-%m-%d %H:%M:%S',
+                               tz = "UTC")
+  AllReadings <- sample_n(AllReadings, 2000)
   WaterTemp <- data.frame(AllReadings[AllReadings$sensorId == 1,])
   WaterLvl <- data.frame(AllReadings[AllReadings$sensorId == 2,])
   Humidity <- data.frame(AllReadings[AllReadings$sensorId == 3,])
@@ -55,8 +58,10 @@ shinyServer(function(input, output) {
               options = list(dom = 't',
                              ordering = F),
               selection = list(target = 'cell',
-                               selected = data.matrix(dbReadTable(con, 'Schedule'),
-                                                      rownames.force = NA)),
+                               selected = data.matrix(
+                                  dbReadTable(con, 'Schedule'),
+                                  rownames.force = NA)
+                               ),
               class = 'cell-border compact') %>%
                 formatStyle(1:24, cursor = 'pointer')
   })
@@ -92,18 +97,26 @@ shinyServer(function(input, output) {
   
   # Do Plots
   output$pWaterLvl <- renderPlot({
-    ggplot(data()$WaterLvl, aes(x = ts)) + geom_point(aes(y = reading)) + ggtitle("Water Level")
+    ggplot(data()$WaterLvl, aes(x = ts)) + 
+      geom_point(aes(y = reading)) +
+      ggtitle("Water Level")
   })
   
   output$pAirTemp <- renderPlot({
-    ggplot(data()$AirTemp, aes(x = ts)) + geom_point(aes(y = reading)) + ggtitle("Air Temperature")
+    ggplot(data()$AirTemp, aes(x = ts)) +
+      geom_point(aes(y = reading)) +
+      ggtitle("Air Temperature")
   })
   
   output$pWaterTemp <- renderPlot({
-    ggplot(data()$WaterTemp, aes(x = ts)) + geom_point(aes(y = reading)) + ggtitle("Water Temperature")
+    ggplot(data()$WaterTemp, aes(x = ts)) +
+      geom_point(aes(y = reading)) +
+      ggtitle("Water Temperature")
   })
   
   output$pHumidity <- renderPlot({
-    ggplot(data()$Humidity, aes(x = ts)) + geom_point(aes(y = reading)) + ggtitle("Humidity")
+    ggplot(data()$Humidity, aes(x = ts)) +
+      geom_point(aes(y = reading)) +
+      ggtitle("Humidity")
   })
 })
