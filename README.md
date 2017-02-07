@@ -27,7 +27,7 @@ This section describes the layout of hardware in the project
             |                                  \
             |                                   --- Lights
             |                                   \
-            \                                    --- Air Pump
-             -------- WebCam
+             \                                    --- Air Pump
+              -------- WebCam
 
 

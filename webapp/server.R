@@ -30,7 +30,7 @@ loadAllReadings <- function(tbname = 'vSensorReadings') {
   AllReadings <- data.frame(dbReadTable(con, tbname))
   AllReadings$ts <- as.POSIXct(AllReadings$ts, format = '%Y-%m-%d %H:%M:%S',
                                tz = "UTC")
-  AllReadings <- sample_n(AllReadings, 2000)
+  AllReadings <- sample_n(AllReadings, 200)
   WaterTemp <- data.frame(AllReadings[AllReadings$sensorId == 1,])
   WaterLvl <- data.frame(AllReadings[AllReadings$sensorId == 2,])
   Humidity <- data.frame(AllReadings[AllReadings$sensorId == 3,])
