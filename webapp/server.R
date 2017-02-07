@@ -11,7 +11,6 @@ library(DT)
 library(dplyr)
 library(ggplot2)
 
-
 # this toggle table just creates a basic table that datatables 
 # understands and can use to create a selectable table.
 toggleTable <- matrix(" ", nrow=3, ncol = 24,
