@@ -6,6 +6,7 @@
 library(shiny)
 library(DT)
 library(shinydashboard)
+library(plotly)
 
 dashboardPage(
   dashboardHeader(title = 'Automated Aquaponics Dashboard'),
@@ -31,14 +32,14 @@ dashboardPage(
         ),
         fluidRow(
           splitLayout(cellWidths = c('49%', '49%'),
-            plotOutput('pWaterLvl'),
-            plotOutput('pHumidity')
+            plotlyOutput('pWaterLvl'),
+            plotlyOutput('pHumidity')
           )
         ),
         fluidRow(
           splitLayout(cellWidths = c('49%', '49%'),
-            plotOutput('pWaterTemp'),
-            plotOutput('pAirTemp')
+            plotlyOutput('pWaterTemp'),
+            plotlyOutput('pAirTemp')
           )
         )
       ),

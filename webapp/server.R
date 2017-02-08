@@ -10,6 +10,7 @@ library(DBI)
 library(DT)
 library(dplyr)
 library(ggplot2)
+library(plotly)
 
 # this toggle table just creates a basic table that datatables 
 # understands and can use to create a selectable table.
@@ -95,27 +96,31 @@ shinyServer(function(input, output) {
   })
   
   # Do Plots
-  output$pWaterLvl <- renderPlot({
-    ggplot(data()$WaterLvl, aes(x = ts)) + 
-      geom_point(aes(y = reading)) +
+  output$pWaterLvl <- renderPlotly({
+    t <- ggplot(data()$WaterLvl, aes(x = ts)) + 
+      geom_line(aes(y = reading)) +
       ggtitle("Water Level")
+    ggplotly(t)
   })
   
-  output$pAirTemp <- renderPlot({
-    ggplot(data()$AirTemp, aes(x = ts)) +
-      geom_point(aes(y = reading)) +
+  output$pAirTemp <- renderPlotly({
+    t <- ggplot(data()$AirTemp, aes(x = ts)) +
+      geom_line(aes(y = reading)) +
       ggtitle("Air Temperature")
+    ggplotly(t)
   })
   
-  output$pWaterTemp <- renderPlot({
-    ggplot(data()$WaterTemp, aes(x = ts)) +
-      geom_point(aes(y = reading)) +
+  output$pWaterTemp <- renderPlotly({
+    t <- ggplot(data()$WaterTemp, aes(x = ts)) +
+      geom_line(aes(y = reading)) +
       ggtitle("Water Temperature")
+    ggplotly(t)
   })
   
-  output$pHumidity <- renderPlot({
-    ggplot(data()$Humidity, aes(x = ts)) +
-      geom_point(aes(y = reading)) +
+  output$pHumidity <- renderPlotly({
+    t <- ggplot(data()$Humidity, aes(x = ts)) +
+      geom_line(aes(y = reading)) +
       ggtitle("Humidity")
+    ggplotly(t)
   })
 })
