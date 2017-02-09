@@ -56,7 +56,7 @@ INSERT INTO Schedule VALUES (1, 1);
 CREATE VIEW IF NOT EXISTS vNewestReadings AS
 SELECT
 	r.id,
-	r.ts,
+	datetime(r.ts, 'localtime') as ts,
 	r.sensorId,
 	r.reading || ' ' || s.units as reading,
 	s.name as sensor,
@@ -74,7 +74,13 @@ JOIN Sensors s on s.id = r.sensorId;
 
 CREATE VIEW IF NOT EXISTS vSensorReadings AS
 SELECT
-    *
+    r.id,
+    datetime(ts, 'localtime') as ts,
+    reading,
+    name,
+    description,
+    units,
+    sensorId
 FROM Readings r
 JOIN Sensors s ON s.id = r.sensorId;
 

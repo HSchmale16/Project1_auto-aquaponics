@@ -7,6 +7,6 @@ do
     do
         ./sendMsg.js $s
         echo Request Read From Sensor $s
-        sleep 1
+        sleep 50
     done
 done
