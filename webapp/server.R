@@ -66,6 +66,31 @@ shinyServer(function(input, output) {
   data <- reactive(loadAllReadings(input$timerange))
   latestReadings <- loadLatestReadings()
   
+  saveConstraints <- reactive({
+    constraints <- list(
+      water_level = list(
+        low  = input$water_lvl_min,
+        high = input$water_lvl_max
+      ),
+      water_temp = list(
+        low  = input$water_temp_min,
+        high = input$water_temp_max
+      ),
+      air_temp = list(
+        low  = input$air_temp_min,
+        high = input$air_temp_max
+      )
+    )
+    print(rjson::toJSON(constraints))
+  })
+  
+  observeEvent(input$water_lvl_min,  {saveConstraints()})
+  observeEvent(input$water_lvl_max,  {saveConstraints()})
+  observeEvent(input$water_temp_min, {saveConstraints()})
+  observeEvent(input$water_temp_max, {saveConstraints()})
+  observeEvent(input$air_temp_min,   {saveConstraints()})
+  observeEvent(input$air_temp_max,   {saveConstraints()})
+
   # Put together the toggle table for setting the schedule
   output$schedule <- DT::renderDataTable({
     datatable(toggleTable,
