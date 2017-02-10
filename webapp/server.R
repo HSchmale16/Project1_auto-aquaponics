@@ -11,6 +11,7 @@ library(DT)
 library(dplyr)
 library(ggplot2)
 library(plotly)
+library(rjson)
 
 # this toggle table just creates a basic table that datatables 
 # understands and can use to create a selectable table.
@@ -19,6 +20,9 @@ toggleTable <- matrix(" ", nrow=3, ncol = 24,
                         c("Circulation Pump", "Air Pump", "Aquarium Lights"),
                         seq.int(0, 23, 1)
                       ))
+
+sensorConstraints <- fromJSON(file = '../config/constraints.json')
+
 
 con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
 

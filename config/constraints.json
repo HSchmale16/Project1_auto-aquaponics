@@ -1,0 +1,14 @@
+{
+    "water_level": {
+        "low": 50,
+        "high": 75
+    },
+    "water_temp": {
+        "low": 20,
+        "high": 25
+    },
+    "air_temp": {
+        "low": 18,
+        "high": 27
+    }
+}
