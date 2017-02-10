@@ -47,19 +47,25 @@ dashboardPage(
         verbatimTextOutput('selectedInfo')
       ),
       tabPanel("Constraints",
-        numericInput('water_temp_min', 'Minimum Water Temperature',
-                     constraints$water_temp$low),
-        numericInput('water_temp_max', 'Maximum Water Temperature',
-                     constraints$water_temp$high),
-        numericInput('air_temp_min'  , 'Minimum Air Temperature',
-                     constraints$air_temp$low),
-        numericInput('air_temp_max'  , 'Maxium Air Temperature',
-                     constraints$air_temp$high),
-        numericInput('water_lvl_min' , 'Minimum Water Level',
-                     constraints$water_level$low),
-        numericInput('water_lvl_max' , 'Maximum Water Level',
-                     constraints$water_level$high)
-      )
+        fluidRow(
+          column(3,
+            numericInput('water_temp_min', 'Minimum Water Temperature',
+                         constraints$water_temp$low),
+            numericInput('air_temp_min'  , 'Minimum Air Temperature',
+                         constraints$air_temp$low),
+            numericInput('water_lvl_min' , 'Minimum Water Level',
+                         constraints$water_level$low)
+          ),
+          column(3, 
+            numericInput('water_temp_max', 'Maximum Water Temperature',
+                         constraints$water_temp$high),
+            numericInput('air_temp_max'  , 'Maxium Air Temperature',
+                         constraints$air_temp$high),
+            numericInput('water_lvl_max' , 'Maximum Water Level',
+                         constraints$water_level$high)
+          )
+        )
+      ) # Close Constraints Tab Panel
     )
   )
 )
