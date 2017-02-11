@@ -1,7 +1,7 @@
 #!/bin/bash
 while true
 do
-    for s in tCiPump tLIghts tAirPump
+    for s in yCiPump yLIghts yAirPump nCiPump nLIghts nAirPump
     do
         echo "Sensor $s"
         ./sendMsg.js $s

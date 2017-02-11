@@ -32,9 +32,12 @@ const CommandAction ACTIONS[] = {
     {"rdWaLvl", readWaterLevel},
     {"rdHumid", readHumidity},
     {"rdAirTm", readAirThermometer},
-    {"tLights", toggleLights},
-    {"tAirPmp", toggleAirPump},
-    {"tCiPump", togglePump},
+    {"nLights", noLights},
+    {"nAirPmp", noAirPump},
+    {"nCiPump", noCircPump},
+    {"yLights", yesLights},
+    {"yAirPmp", yesAirPump},
+    {"yCiPump", yesCircPump},
 };
 
 // Total Number of Possible Actions
@@ -134,26 +137,35 @@ void readWaterLevel() {
 
 // toggles the pump, and prints the current state of the pump after
 // toggling it.
-void togglePump() {
-    // flip-flop the current state of pin pump
-    digitalWrite(PIN_PUMP, !digitalRead(PIN_PUMP));
+void yesCircPump() {
+    digitalWrite(PIN_PUMP, 1);
     // the digitalRead needs to be inverted to be in standard notion
     // because of the pull down on the pins.
     Serial.println(!digitalRead(PIN_PUMP));
 }
 
-void toggleLights() {
-    // flip-flop the current state of pin pump
-    digitalWrite(PIN_LIGHTS, !digitalRead(PIN_LIGHTS));
-    // the digitalRead needs to be inverted to be in standard notion
-    // because of the pull down on the pins.
+void yesLights() {
+    digitalWrite(PIN_LIGHTS, 1);
     Serial.println(!digitalRead(PIN_LIGHTS));
 }
 
-void toggleAirPump() {
-    // flip-flop the current state of pin pump
-    digitalWrite(PIN_AIR_PUMP, !digitalRead(PIN_AIR_PUMP));
-    // the digitalRead needs to be inverted to be in standard notion
+void yesAirPump() {
+    digitalWrite(PIN_AIR_PUMP, 1);
     // because of the pull down on the pins.
     Serial.println(!digitalRead(PIN_AIR_PUMP));
+}
+
+void noLights() {
+    digitalWrite(PIN_LIGHTS, 0);
+    Serial.println(!digitalRead(PIN_LIGHTS));
+}
+
+void noAirPump() {
+    digitalWrite(PIN_AIR_PUMP, 0);
+    Serial.println(!digitalRead(PIN_LIGHTS));
+}
+
+void noCircPump() {
+    digitalWrite(PIN_PUMP, 0);
+    Serial.println(!digitalRead(PIN_PUMP));
 }
