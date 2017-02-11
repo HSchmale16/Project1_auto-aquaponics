@@ -30,14 +30,15 @@ CREATE TABLE IF NOT EXISTS Actions (
 );
 
 INSERT INTO Actions(name, description) VALUES
-    ('toggle circulation pump', 'toggling of the primary circulation pump'),
-    ('toggle air pump', 'toggling of the airation pump'),
-    ('toggle lights', 'toggling of the tank lights')
+    ('CiPump', 'toggling of the primary circulation pump'),
+    ('AirPmp', 'toggling of the airation pump'),
+    ('Lights', 'toggling of the tank lights')
     ;
 
 CREATE TABLE IF NOT EXISTS ActionLog (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
     actionId        INTEGER REFERENCES Actions(id),
+    value           INTEGER,
     ts              TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -119,22 +120,24 @@ WITH RECURSIVE
 )
 SELECT x FROM cnt;
 
--- Describes the schedule statew
+-- Describes the schedule state
 CREATE VIEW vScheduleState AS
-SELECT
-	X1 as Action,
-	GROUP_CONCAT(X2, ' ') as hours,
+SELECT a.name, action, hours, state
+FROM
+(SELECT
+	X1 as action,
+	X2 - 1 as hours,
 	1 as state
 FROM Schedule
-GROUP By X1
 UNION
 SELECT
-	X1 as Action,
-	(SELECT GROUP_CONCAT(x, ' ') FROM __hoursInDay WHERE x NOT IN (SELECT X2 FROM Schedule WHERE X1 = s2.X1)),
+	a.id,
+	x - 1 as hour,
 	0 as state
-FROM Schedule s2
-GROUP BY X1;
-
+FROM __hoursInDay, actions a
+WHERE a.id || ' '  || x NOT IN (
+	SELECT X1 || ' ' || X2 FROM Schedule))
+JOIN Actions a ON a.id = action
 
 
 
