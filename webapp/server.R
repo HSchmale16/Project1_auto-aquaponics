@@ -66,6 +66,7 @@ shinyServer(function(input, output) {
   data <- reactive(loadAllReadings(input$timerange))
   latestReadings <- loadLatestReadings()
   
+  # observe changes to the constaints
   saveConstraints <- reactive({
     constraints <- list(
       water_level = list(
@@ -81,15 +82,16 @@ shinyServer(function(input, output) {
         high = input$air_temp_max
       )
     )
-    print(rjson::toJSON(constraints))
+    json <- rjson::toJSON(constraints)
+    # TODO: actually save the json
   })
   
-  observeEvent(input$water_lvl_min,  {saveConstraints()})
-  observeEvent(input$water_lvl_max,  {saveConstraints()})
-  observeEvent(input$water_temp_min, {saveConstraints()})
-  observeEvent(input$water_temp_max, {saveConstraints()})
-  observeEvent(input$air_temp_min,   {saveConstraints()})
-  observeEvent(input$air_temp_max,   {saveConstraints()})
+  observeEvent(input$water_lvl_min,  { saveConstraints() })
+  observeEvent(input$water_lvl_max,  { saveConstraints() })
+  observeEvent(input$water_temp_min, { saveConstraints() })
+  observeEvent(input$water_temp_max, { saveConstraints() })
+  observeEvent(input$air_temp_min,   { saveConstraints() })
+  observeEvent(input$air_temp_max,   { saveConstraints() })
 
   # Put together the toggle table for setting the schedule
   output$schedule <- DT::renderDataTable({
@@ -158,7 +160,6 @@ shinyServer(function(input, output) {
     t <- ggplot(data()$WaterTemp, aes(x = ts)) +
       geom_line(aes(y = reading)) +
       ggtitle("Water Temperature")
-      
     ggplotly(t)
   })
   
