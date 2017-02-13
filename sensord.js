@@ -12,6 +12,8 @@ var SerialPort = require('serialport');
 var RedisSMQ = require('rsmq');
 var config = require('./config/config.json');
 var sqlite3 = require('sqlite3');
+var child_process = require('child_process');
+
 var db = new sqlite3.Database(path.join(__dirname + '/db/database.sqlite'));
 
 var rsmq = new RedisSMQ(config.redis);
@@ -19,6 +21,8 @@ rsmq.createQueue({qname: config.msgq.reqAction}, cb_createQueue);
 rsmq.createQueue({qname: config.msgq.recvSensor}, cb_createQueue);
 
 setInterval(recvMsg, 100);
+// handle setting the actions every 120 seconds
+setInterval(handleActions, 60 * 1000);
 
 // contains code that should go in  the database, and the code to relate them.
 var codes4db = {};
@@ -74,4 +78,11 @@ function cb_recvMsg(err, resp) {
             // handle alternate states like where we need to do blob counting for counting fish
         }
     }
+}
+
+function handleActions() {
+    child_process.exec(path.join(__dirname, './sched.js'),
+                function(err) {
+                    if(err) { console.log(err) }
+                });
 }

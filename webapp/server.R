@@ -174,7 +174,7 @@ shinyServer(function(input, output) {
   output$pHumidity <- renderPlotly({
     t <- ggplot(data()$Humidity, aes(x = ts)) +
       geom_line(aes(y = reading)) +
-      ggtitle("Humidity") +
+      ggtitle("Relative Humidity") +
       coord_cartesian(ylim=c(0, 100))
     ggplotly(t)
   })
