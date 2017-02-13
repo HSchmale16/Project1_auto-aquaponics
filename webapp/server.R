@@ -166,14 +166,16 @@ shinyServer(function(input, output) {
   output$pAirTemp <- renderPlotly({
     t <- ggplot(data()$AirTemp, aes(x = ts)) +
       geom_line(aes(y = reading)) +
-      ggtitle("Air Temperature")
+      ggtitle("Air Temperature") +
+      coord_cartesian(ylim=c(15, 35))
     ggplotly(t)
   })
   
   output$pHumidity <- renderPlotly({
     t <- ggplot(data()$Humidity, aes(x = ts)) +
       geom_line(aes(y = reading)) +
-      ggtitle("Humidity")
+      ggtitle("Humidity") +
+      coord_cartesian(ylim=c(0, 100))
     ggplotly(t)
   })
 })
