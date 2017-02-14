@@ -32,9 +32,11 @@ const CommandAction ACTIONS[] = {
     {"rdWaLvl", readWaterLevel},
     {"rdHumid", readHumidity},
     {"rdAirTm", readAirThermometer},
+    // negate the current actions
     {"nLights", noLights},
     {"nAirPmp", noAirPump},
     {"nCiPump", noCircPump},
+    // activates the actions
     {"yLights", yesLights},
     {"yAirPmp", yesAirPump},
     {"yCiPump", yesCircPump},
@@ -131,8 +133,18 @@ void readHumidity() {
 
 void readWaterLevel() {
     int startTime = millis();
+    // delay for a clean pulse
+    digitalWrite(pinTrigger, LOW);
+    delayMicroseconds(5);
+    digitalWrite(pinTrigger, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(pinTrigger, LOW);
+    
+    duration = pulseIn(pinEcho, HIGH);
 
-    Serial.println(0);
+    Serial.println((duration / 2) / 29.1);
+
+    delay(100);
 }
 
 // toggles the pump, and prints the current state of the pump after
