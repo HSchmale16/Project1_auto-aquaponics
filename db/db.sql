@@ -137,7 +137,7 @@ SELECT
 FROM __hoursInDay, actions a
 WHERE a.id || ' '  || x NOT IN (
 	SELECT X1 || ' ' || X2 FROM Schedule))
-JOIN Actions a ON a.id = action
+JOIN Actions a ON a.id = action;
 
 
 
