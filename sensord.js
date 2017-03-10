@@ -5,6 +5,8 @@
  * Henry J Schmale
  * December 19, 2016
  */
+
+// allows comments in the json config files
 require('json-comments');
 
 var path = require('path');
@@ -20,17 +22,20 @@ var rsmq = new RedisSMQ(config.redis);
 rsmq.createQueue({qname: config.msgq.reqAction}, cb_createQueue);
 rsmq.createQueue({qname: config.msgq.recvSensor}, cb_createQueue);
 
+// poll for messages every 100 milliseconds 
 setInterval(recvMsg, 100);
-// handle setting the actions every 120 seconds
-setInterval(handleActions, 60 * 1000);
+// handle setting the actions every 3600 seconds
+setInterval(handleActions, 60 * 60 * 1000);
 
-// contains code that should go in  the database, and the code to relate them.
+// Relates the sensor codes to the database codes
 var codes4db = {};
 config.actions.sensor.forEach(function(x){
     codes4db[x.name] = x.code;
 });
 var validSerialCodes = config.actions.validSerial;
 
+// Open up the serial port for communication with the arduino
+// The port splits messages on newlines
 var port = new SerialPort(config.serial.filename, {
     baudRate: config.serial.baudrate,
     parser: SerialPort.parsers.readline('\n')
@@ -38,6 +43,10 @@ var port = new SerialPort(config.serial.filename, {
 
 port.on("data", cb_HandleSerialData);
 
+/*
+ * callback for recieving data over the serial port
+ * Handles inserts into the database.
+ */
 function cb_HandleSerialData(data) {
     console.log(data);
 
@@ -62,6 +71,9 @@ function recvMsg() {
     rsmq.popMessage({qname: config.msgq.reqAction}, cb_recvMsg);
 }
 
+/*
+ * Callback for when a queue is created
+ */
 function cb_createQueue(err, resp) {
     console.log(resp);
     if(resp === 1) {
@@ -69,6 +81,9 @@ function cb_createQueue(err, resp) {
     }
 }
 
+/*
+ * callback function for recieving a message from the redis message queue
+ */
 function cb_recvMsg(err, resp) {
     if(resp.id){
         console.log('msg recv.', resp);
@@ -80,6 +95,9 @@ function cb_recvMsg(err, resp) {
     }
 }
 
+/*
+ * Runs the script for handling the various actions
+ */
 function handleActions() {
     child_process.exec(path.join(__dirname, './sched.js'),
                 function(err) {
