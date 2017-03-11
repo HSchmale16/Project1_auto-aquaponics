@@ -67,6 +67,15 @@ function cb_HandleSerialData(data) {
     }
 }
 
+/* 
+ * Checks if a value is in range if not return other than 0
+ * value the val to check
+ * code the code of the sensor
+ */
+function checkConstraintsOfValue(value, code) {
+
+}
+
 function recvMsg() {
     rsmq.popMessage({qname: config.msgq.reqAction}, cb_recvMsg);
 }

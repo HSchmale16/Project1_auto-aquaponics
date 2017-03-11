@@ -84,6 +84,7 @@ shinyServer(function(input, output) {
     )
     json <- rjson::toJSON(constraints)
     # TODO: actually save the json
+    write(json, file = '../config/constraints.json')
   })
   
   observeEvent(input$water_lvl_min,  { saveConstraints() })
