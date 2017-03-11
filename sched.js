@@ -13,6 +13,11 @@ var config = require('./config/config.json');
 var db = new sqlite3.Database(path.join(__dirname + '/db/database.sqlite')); 
 var child_process = require('child_process');
 
+/*
+ * The callback function for selecting things from the schedule state.
+ * Launches a child process that sends a message to handle the actions
+ *
+ */
 function sqlcb_actionToggle(err, row){
     if(err)
         return;
