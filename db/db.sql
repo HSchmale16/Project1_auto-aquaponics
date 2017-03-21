@@ -9,10 +9,10 @@ CREATE TABLE IF NOT EXISTS Sensors (
 );
 
 INSERT INTO Sensors (name, description, units) VALUES
-    ('water thermometer', 'reads the water temperature', 'Celsius'),
+    ('water thermometer', 'reads the water temperature', 'Fahrenheit'),
     ('water level', 'reads the current waterlevel using an ultrasonic sensor', 'centimeters'),
     ('humidity', 'reads the relative humidity of the air', 'Percent'),
-    ('air temperature', 'reads the current air temperature', 'Celsius')
+    ('air temperature', 'reads the current air temperature', 'Fahrenheit')
     ;
 
 CREATE TABLE IF NOT EXISTS Readings (

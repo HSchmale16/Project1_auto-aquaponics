@@ -46,7 +46,7 @@ const CommandAction ACTIONS[] = {
 const int ACTION_COUNT = sizeof(ACTIONS) / sizeof(CommandAction); 
 
 // Define the pins used
-const int pinDHT11 = 6;
+const int PIN_DHT11 = 6;
 const int ONE_WIRE_BUS = 5;
 const int pinTrigger = 12;
 const int pinEcho = 11;
@@ -58,7 +58,7 @@ const int PIN_AIR_PUMP =  RELAY_BOARD_LOWER + 3;
 
  /* Temperature and Humidity Sensor
  */
-DHT dht(pinDHT11, DHTTYPE);
+DHT dht(PIN_DHT11, DHTTYPE);
 
 
 /* Setup water temperature sensor
@@ -116,13 +116,15 @@ void setup() {
  */
 void readWaterThermometer() {
     sensors.requestTemperatures();
-    Serial.println(sensors.getTempCByIndex(0));
+    float tempC = sensors.getTempCByIndex(0);
+    Serial.println(DallasTemperature::toFahrenheit(tempC));
 }
 
 /* Read the air temperature using a DHT11 Sensor
  */
 void readAirThermometer() {
-    Serial.println(dht.readTemperature());
+    // read as fahrenheit
+    Serial.println(dht.readTemperature(true));
 }
 
 /* Read the humidity using a DHT11 Sensor
@@ -140,7 +142,7 @@ void readWaterLevel() {
     delayMicroseconds(10);
     digitalWrite(pinTrigger, LOW);
     
-    duration = pulseIn(pinEcho, HIGH);
+    int duration = pulseIn(pinEcho, HIGH);
 
     Serial.println((duration / 2) / 29.1);
 
