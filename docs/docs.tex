@@ -1,9 +1,11 @@
-\documentclass[american,man,12pt]{apa6}
+\documentclass[american,doc,12pt]{apa6}
 
 \usepackage{hyperref}
 \usepackage{babel}
 \usepackage{csquotes}
 \usepackage[backend=biber,date=short,maxcitenames=2,style=apa]{biblatex}
+\usepackage{enumitem}
+\usepackage{tikz}
 
 \DeclareLanguageMapping{american}{american-apa}
 
@@ -15,10 +17,9 @@
 \addbibresource{project.bib}
 \nocite{*}
 
-
 \begin{document}
 \maketitle
-\tableofcontents
+%\tableofcontents
 
 \section{Introduction}
 This manual provides the documentation for my partially automated aquaponics
@@ -26,9 +27,54 @@ system. The system provides facilities for monitoring fish count, water level,
 water temperature, and air quality factors. It also provides control systems
 for toggling the pumps on and off, along with lighting factors for the tank.
 
-\section{Software Architecture}
+\section{System Architecture}
+The control system consists of many parts, such as the database, data collection
+and control, and web interface. The database provides storage of the various
+events and readings collected. The web interface provides control of the various
+components to the user, and allows the user to view the current status of the system.
+The data and control system manages the connection to the microcontroller, and collects
+data from the various sensors, it also manages the toggling of the various pumps and
+lights to keep the fish alive.
 
 
+
+\subsection{Serial Communication Protocol}
+This section describes the command protocol used to communicate with the
+microcontroller over serial. The protocol is that of a client and server,
+with line delimitation. The first step is for the client, in this case the
+main computer, to send a command in the list of known commands. The server,
+arduino, receives the command and performs the action. Over the same link, it
+will send back the command and the value returned separated by a space. By
+duplicating the command it allows multiple commands to be queued over the same
+link, without worry of the data being muddled.
+
+\begin{description}[style=nextline]
+	\item[rWatThm] read the water thermometer
+	\item[rdWaLvl] read the distance measuring device to obtain distance to water.
+	\item[rdHumid] read the current humidity in the room
+	\item[rdAirTm] read the current air temperature
+\end{description}
+
+\subsection{Sensors}
+This section describes the various sensors used to monitor the system, and their
+purpose. These sensors include temperature probes, distance measuring devices,
+and humidity. These sensors allow the user to correlate the data with how well
+their fish are doing.
+
+\subsubsection{Water Level with Distance Measuring}
+The depth of the water is measured using an ultrasonic distance sensor. It uses
+sound to find how distant an object is.
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+	\draw[fill=red] (0.75,4) rectangle (1.5,4.5);
+	\draw (0,0) rectangle (5, 4);
+	\draw[fill=blue](0,0) rectangle (5,2);
+	\end{tikzpicture}
+	\caption{How the distance measuring works}
+	\label{fig:distance measuring}
+\end{figure}
 
 \section{Parts List}
 \begin{itemize}
@@ -36,11 +82,15 @@ for toggling the pumps on and off, along with lighting factors for the tank.
 	\item 3 inch PVC Pipe, 5 foot long.
 	\item Net Pots
 	\item 390 Gallon Per Hour Submersible Pump
-	\item 1/2 inch plastic tubing
-    \item 1/2 inch barbed T-joint
     \item 2 - 1/2 inch hose barbs threaded
     \item Hose Clamps
+    \item GFCI Outlet
+    \item Regular Outlets
+    \item Arduino Mega
 \end{itemize}
+
+\section{Diagram}
+
 
 
 \section{How To Build}
@@ -51,16 +101,15 @@ for toggling the pumps on and off, along with lighting factors for the tank.
 \end{enumerate}
 
 
-\section{Setup of the System on First Run}
-To be written
-
-
 \section{Starting a new garden}
 This section describes how to start a new crop in the automated aquaponics
 system. It is broken down into two sections, the fish and starting the plants.
 
 \begin{enumerate}
 	\item Fill tank with water.
+	\item Start pump circulation.
+	\item Introduce the fish to the system.
+	\item Start plants in the rockwool plugs.
 \end{enumerate}
 
 

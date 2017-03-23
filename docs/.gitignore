@@ -10,3 +10,5 @@
 *.pdf
 *.fdb_latexmk
 *.aux
+*.fff
+*.gz
