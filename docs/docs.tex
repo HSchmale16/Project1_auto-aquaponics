@@ -11,10 +11,11 @@
 
 \DeclareLanguageMapping{american}{american-apa}
 
-\title{Automated Aquaponics System Build and Setup Manual}
+\title{Automated Aquaponics Developer Setup Manual}
 \shorttitle{AutoAquaponics}
 \author{Henry J Schmale}
 \affiliation{Harrisburg University of Science and Technology}
+\date{\today}
 
 \addbibresource{project.bib}
 \nocite{*}
@@ -116,14 +117,34 @@ a DST18B20 sensor.
 \end{itemize}
 
 \section{Diagram}
+Please see figure~\ref{fig:front view} and figure~\ref{fig:top view} for
+details of how the system is laid out. Due to the way the apa6 package works the
+diagrams must be referenced and cannot be placed here, but are at the end. These
+diagrams are not to scale, and are not absolute as the number of holes may vary
+and the dimensions are up to the user. They are to give a general idea of a
+finished system.
+
+% Front View
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}
-        \draw[fill=blue] (0,0) rectangle (6, 4);
+        \draw (0,0) rectangle (6, 4);
         \draw (0,4) -- (.25,4.25) -- (5.75,4.25) -- (6,4);
+        \draw (-1,4.25) rectangle (7,4.75);
     \end{tikzpicture}
     \caption{Front View of Aquaponics System}
     \label{fig:front view}
+\end{figure}
+
+% Top VIew
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \draw (0,0) rectangle (6, 3);
+        \draw[fill=white] (-1,1.25) rectangle (7,1.75);
+    \end{tikzpicture}
+    \caption{Top View of Aquaponics System}
+    \label{fig:top view}
 \end{figure}
 
 
