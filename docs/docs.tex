@@ -1,4 +1,4 @@
-\documentclass[american,doc,12pt]{apa6}
+\documentclass[american,man,12pt]{apa6}
 
 \usepackage{hyperref}
 \usepackage{babel}
@@ -6,6 +6,8 @@
 \usepackage[backend=biber,date=short,maxcitenames=2,style=apa]{biblatex}
 \usepackage{enumitem}
 \usepackage{tikz}
+
+\usetikzlibrary{patterns}
 
 \DeclareLanguageMapping{american}{american-apa}
 
@@ -63,18 +65,42 @@ their fish are doing.
 
 \subsubsection{Water Level with Distance Measuring}
 The depth of the water is measured using an ultrasonic distance sensor. It uses
-sound to find how distant an object is.
+sound to find how distant an object is, in this case the surface of the water.
+This method assumes that the total distance between the sensor and the container
+bottom is known as $D_t$, and the distance between the water surface and the sensor
+is known as $D_a$. The water depth is then obtained using the following formula,
+$D_w = D_t - D_a$. Please see figure~\ref{fig:distance measuring} for details on the
+measurement.
 
 \begin{figure}[h]
 	\centering
 	\begin{tikzpicture}
 	\draw[fill=red] (0.75,4) rectangle (1.5,4.5);
-	\draw (0,0) rectangle (5, 4);
-	\draw[fill=blue](0,0) rectangle (5,2);
+    \draw (0,0) rectangle (5, 4);
+    \draw[fill=blue](0,0) rectangle (5,2);
+    % dim lines
+    \draw[<->,black] (.85,0) -- node[left]{$D_t$}  (.85,4);
+    \draw[<->,black] (1.25,0) -- node[right]{$D_{w}$} (1.25,2);
+    \draw[<->,black] (1.25,2) -- node[right]{$D_{a}$} (1.25,4);
 	\end{tikzpicture}
 	\caption{How the distance measuring works}
 	\label{fig:distance measuring}
 \end{figure}
+
+\subsubsection{Air Temperature and Humidity}
+The air temperature and humidity is obtained using a DHT series sensor. It can
+use any sensor in this series so long as the code on the microcontroller is
+updated. The Adafruit Unified Sensor library is used with DHT extension to
+perform this interfacing on the
+microcontroller(\cite{adafruit-unified-sensor,adafruit-dht}). The current system
+uses the DHT11 sensor, as this was the most common sensor available at build
+time.
+
+\subsubsection{Water Temperature}
+The measurement of water temperature is carried out using Dallas Temperature
+Probe. This sensor is interfaced using the Maxim Temperature Integrated Circuit
+Library (\cite{gh-arduino-temperature}). The current system uses
+a DST18B20 sensor.
 
 \section{Parts List}
 \begin{itemize}
@@ -90,7 +116,15 @@ sound to find how distant an object is.
 \end{itemize}
 
 \section{Diagram}
-
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \draw[fill=blue] (0,0) rectangle (6, 4);
+        \draw (0,4) -- (.25,4.25) -- (5.75,4.25) -- (6,4);
+    \end{tikzpicture}
+    \caption{Front View of Aquaponics System}
+    \label{fig:front view}
+\end{figure}
 
 
 \section{How To Build}

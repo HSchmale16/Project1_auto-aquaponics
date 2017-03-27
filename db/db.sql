@@ -1,6 +1,6 @@
 -- The database of the automatic aquaponics system
 
-
+-- List of all sensors available
 CREATE TABLE IF NOT EXISTS Sensors (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
     name            VARCHAR(24) UNIQUE,
@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS Sensors (
     units           VARCHAR(12)
 );
 
+-- the default sensors
 INSERT INTO Sensors (name, description, units) VALUES
     ('water thermometer', 'reads the water temperature', 'Fahrenheit'),
     ('water level', 'reads the current waterlevel using an ultrasonic sensor', 'centimeters'),
@@ -15,12 +16,15 @@ INSERT INTO Sensors (name, description, units) VALUES
     ('air temperature', 'reads the current air temperature', 'Fahrenheit')
     ;
 
+-- Readings from the various sensors
 CREATE TABLE IF NOT EXISTS Readings (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
     ts              TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     reading         NUMBER,
     sensorId        INTEGER REFERENCES Sensors(id)
 );
+-- only one reading per sensor per timestamp as it only has second level
+-- granualarity
 CREATE UNIQUE INDEX ux_SensorTs ON Readings(ts, sensorId);
 
 CREATE TABLE IF NOT EXISTS Actions (
@@ -110,16 +114,6 @@ SELECT
 FROM vSensorReadings
 GROUP BY sensorId;
 
--- Generates a sequence between 1 and 24
-CREATE VIEW __hoursInDay AS
-WITH RECURSIVE
-	cnt(x) as (
-	SELECT 1
-	UNION ALL SELECT x + 1 from cnt
-	LIMIT 24
-)
-SELECT x FROM cnt;
-
 -- Describes the schedule state
 CREATE VIEW vScheduleState AS
 SELECT a.name, action, hours, state
@@ -138,9 +132,3 @@ FROM __hoursInDay, actions a
 WHERE a.id || ' '  || x NOT IN (
 	SELECT X1 || ' ' || X2 FROM Schedule))
 JOIN Actions a ON a.id = action;
-
-
-
-
-
-
