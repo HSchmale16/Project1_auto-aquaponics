@@ -1,4 +1,4 @@
-\documentclass[american,man,12pt]{apa6}
+\documentclass[american,man,12pt]{article}
 
 \usepackage{hyperref}
 \usepackage{babel}
@@ -39,7 +39,31 @@ The data and control system manages the connection to the microcontroller, and c
 data from the various sensors, it also manages the toggling of the various pumps and
 lights to keep the fish alive.
 
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[
+            every node/.style={circle,minimum width=15mm,draw}
+        ]
+        \node (a) at (0,0)             {Mini Computer};
+        \node (b) at (5,0)             {Arduino};
+        \node[rectangle] (c) at (8,-3) {DST18B20};
+        \node[rectangle] (d) at (8,0)  {DHT11};
+        \node[rectangle] (e) at (8,3)  {Distance Finder};
 
+        \draw (a) -- (b);
+        \draw (b) -- (c);
+        \draw (b) -- (d);
+        \draw (b) -- (e);
+    \end{tikzpicture}
+    \caption{The Hardware Architecture and Sensor Connections}
+    \label{fig:Hardware Architecture}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \caption{The software daemons and connections}
+    \label{fig:Software Architecture}
+\end{figure}
 
 \subsection{Serial Communication Protocol}
 This section describes the command protocol used to communicate with the
@@ -117,8 +141,8 @@ a DST18B20 sensor.
 \end{itemize}
 
 \section{Diagram}
-Please see figure~\ref{fig:front view} and figure~\ref{fig:top view} for
-details of how the system is laid out. Due to the way the apa6 package works the
+Please see figure~\ref{fig:views} for a limited drawing of the system.
+Due to the way the apa6 package works the
 diagrams must be referenced and cannot be placed here, but are at the end. These
 diagrams are not to scale, and are not absolute as the number of holes may vary
 and the dimensions are up to the user. They are to give a general idea of a
@@ -132,20 +156,16 @@ finished system.
         \draw (0,4) -- (.25,4.25) -- (5.75,4.25) -- (6,4);
         \draw (-1,4.25) rectangle (7,4.75);
     \end{tikzpicture}
-    \caption{Front View of Aquaponics System}
-    \label{fig:front view}
-\end{figure}
-
-% Top VIew
-\begin{figure}[h]
-    \centering
     \begin{tikzpicture}
         \draw (0,0) rectangle (6, 3);
         \draw[fill=white] (-1,1.25) rectangle (7,1.75);
     \end{tikzpicture}
-    \caption{Top View of Aquaponics System}
-    \label{fig:top view}
+    \caption{Various Views of the Test System Container. Front view left, Top
+    view right}
+    \label{fig:views}
 \end{figure}
+
+% Top VIew
 
 
 \section{How To Build}
