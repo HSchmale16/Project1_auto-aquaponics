@@ -46,10 +46,18 @@ const CommandAction ACTIONS[] = {
 const int ACTION_COUNT = sizeof(ACTIONS) / sizeof(CommandAction); 
 
 // Define the pins used
-const int PIN_DHT11 = 6;
-const int ONE_WIRE_BUS = 5;
-const int pinTrigger = 12;
-const int pinEcho = 11;
+// Configure DHT 11
+const int PIN_DHT_POWER = 34;
+const int PIN_DHT_GND   = 30;
+const int PIN_DHT11     = 32;
+// DallasTemperature Sensor
+const int ONE_WIRE_BUS  = 5;
+// Distance Finder
+const int PIN_DIS_POW  = 13;
+const int PIN_TRIGGER  = 12;
+const int PIN_ECHO     = 11;
+const int PIN_DIS_GND  = 10;
+// Relay control pins
 const int RELAY_BOARD_LOWER = 14;
 const int RELAY_BOARD_UPPER = 22;
 const int PIN_PUMP = RELAY_BOARD_LOWER + 1;
@@ -59,7 +67,6 @@ const int PIN_AIR_PUMP =  RELAY_BOARD_LOWER + 3;
  /* Temperature and Humidity Sensor
  */
 DHT dht(PIN_DHT11, DHTTYPE);
-
 
 /* Setup water temperature sensor
  */
@@ -71,9 +78,18 @@ void setup() {
     // setup the various sensors on the OneWire bus
     sensors.begin();
     // setup the pins for the echo sensor.
-    pinMode(pinTrigger, OUTPUT);
-    pinMode(pinEcho, INPUT);
-   
+    pinMode(PIN_DIS_POW, OUTPUT);
+    pinMode(PIN_TRIGGER, OUTPUT);
+    pinMode(PIN_ECHO, INPUT);
+    pinMode(PIN_DIS_GND, OUTPUT);
+    digitalWrite(PIN_DIS_POW, HIGH);
+    digitalWrite(PIN_DIS_GND, LOW);
+ 
+    pinMode(PIN_DHT_POWER, OUTPUT);
+    pinMode(PIN_DHT_GND, OUTPUT);
+    digitalWrite(PIN_DHT_POWER, HIGH);
+    digitalWrite(PIN_DHT_GND, LOW);
+     
     dht.begin();
  
     // setup relay pins
@@ -81,8 +97,7 @@ void setup() {
         pinMode(rp, OUTPUT);
         digitalWrite(rp, HIGH);
     }
-    digitalWrite(RELAY_BOARD_UPPER, LOW);
-
+    digitalWrite(RELAY_BOARD_LOWER, LOW);
 }   
     
  void loop() {
@@ -124,7 +139,7 @@ void readWaterThermometer() {
  */
 void readAirThermometer() {
     // read as fahrenheit
-    Serial.println(dht.readTemperature(true));
+    Serial.println(dht.readTemperature());
 }
 
 /* Read the humidity using a DHT11 Sensor
@@ -134,17 +149,18 @@ void readHumidity() {
 }
 
 void readWaterLevel() {
-    int startTime = millis();
     // delay for a clean pulse
-    digitalWrite(pinTrigger, LOW);
+    digitalWrite(PIN_TRIGGER, LOW);
+    delay(225);
+    digitalWrite(PIN_TRIGGER, HIGH);
     delayMicroseconds(5);
-    digitalWrite(pinTrigger, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(pinTrigger, LOW);
+    digitalWrite(PIN_TRIGGER, LOW);
     
-    int duration = pulseIn(pinEcho, HIGH);
-
-    Serial.println((duration / 2) / 29.1);
+    // round trip in milliseconds
+    int duration = pulseIn(PIN_ECHO, HIGH);
+    
+    
+    Serial.println((duration / 2.0));
 
     delay(100);
 }
@@ -152,34 +168,34 @@ void readWaterLevel() {
 // toggles the pump, and prints the current state of the pump after
 // toggling it.
 void yesCircPump() {
-    digitalWrite(PIN_PUMP, 1);
+    digitalWrite(PIN_PUMP, LOW);
     // the digitalRead needs to be inverted to be in standard notion
     // because of the pull down on the pins.
     Serial.println(!digitalRead(PIN_PUMP));
 }
 
 void yesLights() {
-    digitalWrite(PIN_LIGHTS, 1);
+    digitalWrite(PIN_LIGHTS, LOW);
     Serial.println(!digitalRead(PIN_LIGHTS));
 }
 
 void yesAirPump() {
-    digitalWrite(PIN_AIR_PUMP, 1);
+    digitalWrite(PIN_AIR_PUMP, LOW);
     // because of the pull down on the pins.
     Serial.println(!digitalRead(PIN_AIR_PUMP));
 }
 
 void noLights() {
-    digitalWrite(PIN_LIGHTS, 0);
+    digitalWrite(PIN_LIGHTS, HIGH);
     Serial.println(!digitalRead(PIN_LIGHTS));
 }
 
 void noAirPump() {
-    digitalWrite(PIN_AIR_PUMP, 0);
+    digitalWrite(PIN_AIR_PUMP, HIGH);
     Serial.println(!digitalRead(PIN_LIGHTS));
 }
 
 void noCircPump() {
-    digitalWrite(PIN_PUMP, 0);
+    digitalWrite(PIN_PUMP, HIGH);
     Serial.println(!digitalRead(PIN_PUMP));
 }
