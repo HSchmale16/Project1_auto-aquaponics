@@ -1,10 +1,5 @@
 # setup.R
 
-install.packages('DT')
-install.packages('shiny')
-install.packages('shinydashboard')
-install.packages('plotly')
-install.packages('DBI')
-install.packages('dplyr')
-install.packages('ggplot2')
-install.packages('rjson')
+for(x in c('DT', 'shiny', 'shinydashboard', 'plotly', 'DBI', 'dplyr', 'ggplot2', 'rjson')){
+  install.packages(x, repos='http://cran.us.r-project.org')
+}
