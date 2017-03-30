@@ -1,4 +1,4 @@
-\documentclass[american,man,12pt]{article}
+\documentclass[american,12pt]{article}
 
 \usepackage{hyperref}
 \usepackage{babel}
@@ -6,15 +6,14 @@
 \usepackage[backend=biber,date=short,maxcitenames=2,style=apa]{biblatex}
 \usepackage{enumitem}
 \usepackage{tikz}
+\usepackage[margin=1in]{geometry}
 
-\usetikzlibrary{patterns}
+\usetikzlibrary{patterns,fit,positioning}
 
 \DeclareLanguageMapping{american}{american-apa}
 
 \title{Automated Aquaponics Developer Setup Manual}
-\shorttitle{AutoAquaponics}
 \author{Henry J Schmale}
-\affiliation{Harrisburg University of Science and Technology}
 \date{\today}
 
 \addbibresource{project.bib}
@@ -22,7 +21,7 @@
 
 \begin{document}
 \maketitle
-%\tableofcontents
+\tableofcontents
 
 \section{Introduction}
 This manual provides the documentation for my partially automated aquaponics
@@ -44,7 +43,7 @@ lights to keep the fish alive.
     \begin{tikzpicture}[
             every node/.style={circle,minimum width=15mm,draw}
         ]
-        \node (a) at (0,0)             {Mini Computer};
+        \node (a) at (0,0)             {Control Computer};
         \node (b) at (5,0)             {Arduino};
         \node[rectangle] (c) at (8,-3) {DST18B20};
         \node[rectangle] (d) at (8,0)  {DHT11};
@@ -61,6 +60,15 @@ lights to keep the fish alive.
 
 \begin{figure}[h]
     \centering
+    \begin{tikzpicture}
+        \node (a) {R Shiny Web App};
+        \node[right=of a] (b) {SQLite Database};
+        \node[right=of b] (c) {Control and Management Daemon};
+        \node[below=of c] (e) {Arduino};
+
+        \draw[<->] (a) -- (b);
+        \draw[<->] (b) -- (c);
+    \end{tikzpicture}
     \caption{The software daemons and connections}
     \label{fig:Software Architecture}
 \end{figure}
@@ -76,10 +84,10 @@ duplicating the command it allows multiple commands to be queued over the same
 link, without worry of the data being muddled.
 
 \begin{description}[style=nextline]
-	\item[rWatThm] read the water thermometer
-	\item[rdWaLvl] read the distance measuring device to obtain distance to water.
-	\item[rdHumid] read the current humidity in the room
-	\item[rdAirTm] read the current air temperature
+    \item[rWatThm] read the water thermometer
+    \item[rdWaLvl] read the distance measuring device to obtain distance to water.
+    \item[rdHumid] read the current humidity in the room
+    \item[rdAirTm] read the current air temperature
 \end{description}
 
 \subsection{Sensors}
@@ -98,18 +106,18 @@ $D_w = D_t - D_a$. Please see figure~\ref{fig:distance measuring} for details on
 measurement.
 
 \begin{figure}[h]
-	\centering
-	\begin{tikzpicture}
-	\draw[fill=red] (0.75,4) rectangle (1.5,4.5);
-    \draw (0,0) rectangle (5, 4);
-    \draw[fill=blue](0,0) rectangle (5,2);
+    \centering
+    \begin{tikzpicture}
+        \draw[fill=red] (0.75,4) rectangle (1.5,4.5);
+        \draw (0,0) rectangle (5, 4);
+        \draw[fill=blue](0,0) rectangle (5,2);
     % dim lines
-    \draw[<->,black] (.85,0) -- node[left]{$D_t$}  (.85,4);
-    \draw[<->,black] (1.25,0) -- node[right]{$D_{w}$} (1.25,2);
-    \draw[<->,black] (1.25,2) -- node[right]{$D_{a}$} (1.25,4);
-	\end{tikzpicture}
-	\caption{How the distance measuring works}
-	\label{fig:distance measuring}
+        \draw[<->,black] (.85,0) -- node[left]{$D_t$}  (.85,4);
+        \draw[<->,black] (1.25,0) -- node[right]{$D_{w}$} (1.25,2);
+        \draw[<->,black] (1.25,2) -- node[right]{$D_{a}$} (1.25,4);
+    \end{tikzpicture}
+    \caption{How the distance measuring works}
+    \label{fig:distance measuring}
 \end{figure}
 
 \subsubsection{Air Temperature and Humidity}
@@ -129,10 +137,10 @@ a DST18B20 sensor.
 
 \section{Parts List}
 \begin{itemize}
-	\item Large Plastic Reservoir.
-	\item 3 inch PVC Pipe, 5 foot long.
-	\item Net Pots
-	\item 390 Gallon Per Hour Submersible Pump
+    \item Large Plastic Reservoir.
+    \item 3 inch PVC Pipe, 5 foot long.
+    \item Net Pots
+    \item 390 Gallon Per Hour Submersible Pump
     \item 2 - 1/2 inch hose barbs threaded
     \item Hose Clamps
     \item GFCI Outlet
@@ -148,49 +156,53 @@ diagrams are not to scale, and are not absolute as the number of holes may vary
 and the dimensions are up to the user. They are to give a general idea of a
 finished system.
 
-% Front View
 \begin{figure}[h]
     \centering
+    % front view
     \begin{tikzpicture}
         \draw (0,0) rectangle (6, 4);
         \draw (0,4) -- (.25,4.25) -- (5.75,4.25) -- (6,4);
+        % pipe
         \draw (-1,4.25) rectangle (7,4.75);
+        \foreach \x in {-.5,0,.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6}
+        \draw (\x,4.75) arc (230:310:.3);
     \end{tikzpicture}
+    % top view
     \begin{tikzpicture}
         \draw (0,0) rectangle (6, 3);
+        % the pipe
         \draw[fill=white] (-1,1.25) rectangle (7,1.75);
+        \foreach \x in {-.5,0,.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6}
+        \draw (\x,1.5) circle [radius=.15];
     \end{tikzpicture}
     \caption{Various Views of the Test System Container. Front view left, Top
     view right}
     \label{fig:views}
 \end{figure}
 
-% Top VIew
-
-
 \section{How To Build}
 \begin{enumerate}
-	\item Drill PVC pipe with hole saw. Start placing holes 7 inches from the
-		  end, and then 6 inches on center. Continue until you have reached
-		  the end of the pipe, but still have about 7 inches.
+    \item Drill PVC pipe with hole saw. Start placing holes 7 inches from the
+        end, and then 6 inches on center. Continue until you have reached
+        the end of the pipe, but still have about 7 inches.
 \end{enumerate}
 
 
 \section{Starting a new garden}
 This section describes how to start a new crop in the automated aquaponics
 system. It is broken down into two sections, the fish and starting the plants.
+This section is still under construction.
 
 \begin{enumerate}
-	\item Fill tank with water.
-	\item Start pump circulation.
-	\item Introduce the fish to the system.
-	\item Start plants in the rockwool plugs.
+    \item Fill tank with water.
+    \item Start pump circulation.
+    \item Introduce the fish to the system.
+    \item Start plants in the rockwool plugs.
 \end{enumerate}
 
-
-
 \section{Troubleshooting}
-To be written.
+To be written, so far no errors have been encountered that requires a
+troubleshooting section.
 
 
 \printbibliography
