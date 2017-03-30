@@ -58,6 +58,15 @@ lights to keep the fish alive.
     \label{fig:Hardware Architecture}
 \end{figure}
 
+There are 3 main parts in the automated aquaponics system, the database,
+webapp, and the control daemon. The webapp provides details of the current
+system state over time, scheduling of actions, and the ability to edit
+minor configuration settings. The control daemon requests sensor readings,
+updates the relay configuration, and manages the communication between the
+control board and the database. The final piece of the puzzle is the
+database, it manages communication between the webapp and control daemon in
+a structured method.
+
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}
@@ -68,6 +77,7 @@ lights to keep the fish alive.
 
         \draw[<->] (a) -- (b);
         \draw[<->] (b) -- (c);
+        \draw[<->,dashed] (c) -- (e);
     \end{tikzpicture}
     \caption{The software daemons and connections}
     \label{fig:Software Architecture}
