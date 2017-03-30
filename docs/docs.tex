@@ -100,6 +100,18 @@ link, without worry of the data being muddled.
     \item[rdAirTm] read the current air temperature
 \end{description}
 
+The below commands affect the switching of various components. They are set by
+prepending a 'y' or 'n' respectively to switch it on and off.
+
+\begin{description}[style=nextline]
+    \item[CiPump] switches the circulation pump
+    \item[Lights] switches the lights
+    \item[AirPmp] switches the air pump
+\end{description}
+
+
+
+
 \subsection{Sensors}
 This section describes the various sensors used to monitor the system, and their
 purpose. These sensors include temperature probes, distance measuring devices,
@@ -120,8 +132,8 @@ measurement.
     \begin{tikzpicture}
         \draw[fill=red] (0.75,4) rectangle (1.5,4.5);
         \draw (0,0) rectangle (5, 4);
-        \draw[fill=blue](0,0) rectangle (5,2);
-    % dim lines
+        \draw[fill=cyan](0,0) rectangle (5,2);
+        % dim lines
         \draw[<->,black] (.85,0) -- node[left]{$D_t$}  (.85,4);
         \draw[<->,black] (1.25,0) -- node[right]{$D_{w}$} (1.25,2);
         \draw[<->,black] (1.25,2) -- node[right]{$D_{a}$} (1.25,4);
