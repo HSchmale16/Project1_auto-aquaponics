@@ -114,6 +114,15 @@ SELECT
 FROM vSensorReadings
 GROUP BY sensorId;
 
+CREATE VIEW __hoursInDay AS
+WITH RECURSIVE
+    cnt(x) as (
+        SELECT 1
+        UNION ALL SELECT x + 1 from cnt
+            LIMIT 24
+    )
+    SELECT x FROM cnt;
+
 -- Describes the schedule state
 CREATE VIEW vScheduleState AS
 SELECT a.name, action, hours, state
