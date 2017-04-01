@@ -1,3 +1,4 @@
+#!/usr/bin/env Rscript
 # setup.R
 
 pkgs <- c('DT', 'shiny', 'shinydashboard', 'plotly', 'DBI', 
