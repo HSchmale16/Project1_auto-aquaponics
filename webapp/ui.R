@@ -7,9 +7,11 @@ library(shiny)
 library(DT)
 library(shinydashboard)
 library(plotly)
-library(rjson)
+library(DBI)
 
-constraints <<- fromJSON(file = '../config/constraints.json')
+con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
+cc <- dbReadTable(con, 'vCurrentConstraints')
+dbDisconnect(con)
 
 dashboardPage(
   dashboardHeader(title = 'Automated Aquaponics Dashboard'),
@@ -50,19 +52,19 @@ dashboardPage(
         fluidRow(
           column(3,
             numericInput('water_temp_min', 'Minimum Water Temperature',
-                         constraints$water_temp$low),
+                         cc[cc$name == 'water_temp',]$min),
             numericInput('air_temp_min'  , 'Minimum Air Temperature',
-                         constraints$air_temp$low),
+                         cc[cc$name == 'air_temp',]$min),
             numericInput('water_lvl_min' , 'Minimum Water Level',
-                         constraints$water_level$low)
+                         cc[cc$name == 'water_level',]$min)
           ),
           column(3, 
             numericInput('water_temp_max', 'Maximum Water Temperature',
-                         constraints$water_temp$high),
+                         cc[cc$name == 'water_temp',]$max),
             numericInput('air_temp_max'  , 'Maxium Air Temperature',
-                         constraints$air_temp$high),
+                         cc[cc$name == 'air_temp',]$max),
             numericInput('water_lvl_max' , 'Maximum Water Level',
-                         constraints$water_level$high)
+                         cc[cc$name == 'water_level',]$max)
           )
         )
       ) # Close Constraints Tab Panel

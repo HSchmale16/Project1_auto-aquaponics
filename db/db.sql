@@ -55,6 +55,28 @@ CREATE UNIQUE INDEX ux_Schedule ON Schedule(X1, X2);
 -- create an initial entry for the database.
 INSERT INTO Schedule VALUES (1, 1);
 
+-- contains history of the contraints used
+CREATE TABLE Constraints (
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    ts      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    name    VARCHAR(32),
+    low     INTEGER,
+    high    INTEGER
+);
+
+INSERT INTO Constraints (name, low, high) VALUES
+    ('water_level', 20, 25),
+    ('water_temp', 20, 25),
+    ('air_temp', 18, 27),
+    ('humidity', 15, 45);
+
+CREATE VIEW vCurrentConstraints AS
+SELECT name, low, high
+FROM Constraints c
+WHERE
+    id = (SELECT max(id) FROM Constraints
+          WHERE name = c.name);
+
 
 -- Retrieves the Newest Readings for All Sensors that currently exists as a
 -- sensor

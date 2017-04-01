@@ -11,7 +11,6 @@ library(DT)
 library(dplyr)
 library(ggplot2)
 library(plotly)
-library(rjson)
 
 # this toggle table just creates a basic table that datatables 
 # understands and can use to create a selectable table.
@@ -20,9 +19,6 @@ toggleTable <- matrix(" ", nrow=3, ncol = 24,
                         c("Circulation Pump", "Air Pump", "Aquarium Lights"),
                         seq.int(0, 23, 1)
                       ))
-
-sensorConstraints <- fromJSON(file = '../config/constraints.json')
-
 
 con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
 
@@ -61,30 +57,21 @@ loadAllReadings <- function(tbname = 'vSensorReadings') {
          )
 }
 
+loadCurrentConstraints <- function() {
+  dbReadTable(con, 'vCurrentConstraints')
+}
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
   data <- reactive(loadAllReadings(input$timerange))
   latestReadings <- loadLatestReadings()
   
   # observe changes to the constaints
   saveConstraints <- reactive({
-    constraints <- list(
-      water_level = list(
-        low  = input$water_lvl_min,
-        high = input$water_lvl_max
-      ),
-      water_temp = list(
-        low  = input$water_temp_min,
-        high = input$water_temp_max
-      ),
-      air_temp = list(
-        low  = input$air_temp_min,
-        high = input$air_temp_max
-      )
-    )
-    json <- rjson::toJSON(constraints)
-    # TODO: actually save the json
-    write(json, file = '../config/constraints.json')
+    name <- c('water_level', 'air_temp', 'water_temp')
+    low  <- c(input$water_lvl_min, input$air_temp_min, input$water_temp_min)
+    high <- c(input$water_lvl_max, input$air_temp_max, input$water_temp_max)
+    a <- data.frame(name, low, high)
+    dbWriteTable(con, 'Constraints', a, append=TRUE)
   })
   
   observeEvent(input$water_lvl_min,  { saveConstraints() })
@@ -146,6 +133,24 @@ shinyServer(function(input, output) {
       icon = shiny::icon('shower')
     )
   })
+  
+  #############################
+  # Do Constraints
+  #############################
+  cc <- loadCurrentConstraints()
+  updateNumericInput(session, 'water_level_min',
+                     value = cc[cc$name == 'water_level',]$min)
+  updateNumericInput(session, 'water_level_max',
+                     value = cc[cc$name == 'water_level',]$max)
+  updateNumericInput(session, 'water_temp_min',
+                     value = cc[cc$name == 'water_temp',]$min)
+  updateNumericInput(session, 'water_temp_max',
+                     value = cc[cc$name == 'water_temp',]$max)
+  updateNumericInput(session, 'air_temp_min',
+                     value = cc[cc$name == 'air_temp',]$min)
+  updateNumericInput(session, 'air_temp_max',
+                     value = cc[cc$name == 'air_temp',]$max)
+  
   
   #############################
   # Do Plots
