@@ -4,7 +4,8 @@
 library(shiny)
 
 serverOptions <- list(
-  port = 7900
+  port = 7900,
+  host = '0.0.0.0'
 )
 
 shinyAppDir('.', options = serverOptions)
