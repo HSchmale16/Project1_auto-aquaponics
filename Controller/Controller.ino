@@ -169,7 +169,7 @@ void readWaterLevel() {
     int duration = pulseIn(PIN_ECHO, HIGH);
     
     
-    Serial.println((duration / 2.0));
+    Serial.println((duration / 2) / 29.1);
 
     delay(100);
 }
