@@ -27,6 +27,7 @@ setInterval(recvMsg, 100);
 // handle setting the actions every 3600 seconds
 setInterval(handleActions, 60 * 60 * 1000);
 
+
 // Relates the sensor codes to the database codes
 var codes4db = {};
 config.actions.sensor.forEach(function(x){
