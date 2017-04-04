@@ -52,6 +52,8 @@ const int PIN_DHT_GND   = 30;
 const int PIN_DHT11     = 32;
 // DallasTemperature Sensor
 const int ONE_WIRE_BUS  = 5;
+const int ONE_WIRE_POW  = 6;
+const int ONE_WIRE_GND  = 4;
 // Distance Finder
 const int PIN_DIS_POW  = 13;
 const int PIN_TRIGGER  = 12;
@@ -78,13 +80,20 @@ void setup() {
     // setup the various sensors on the OneWire bus
     sensors.begin();
     // setup the pins for the echo sensor.
-    pinMode(PIN_DIS_POW, OUTPUT);
     pinMode(PIN_TRIGGER, OUTPUT);
     pinMode(PIN_ECHO, INPUT);
+    pinMode(PIN_DIS_POW, OUTPUT);
     pinMode(PIN_DIS_GND, OUTPUT);
     digitalWrite(PIN_DIS_POW, HIGH);
     digitalWrite(PIN_DIS_GND, LOW);
+    
+    // configure dallas temp sensor power
+    pinMode(ONE_WIRE_POW, OUTPUT);
+    pinMode(ONE_WIRE_GND, OUTPUT);
+    digitalWrite(ONE_WIRE_POW, HIGH);
+    digitalWrite(ONE_WIRE_GND, LOW);
  
+    // configure dht pins
     pinMode(PIN_DHT_POWER, OUTPUT);
     pinMode(PIN_DHT_GND, OUTPUT);
     digitalWrite(PIN_DHT_POWER, HIGH);
@@ -138,8 +147,8 @@ void readWaterThermometer() {
 /* Read the air temperature using a DHT11 Sensor
  */
 void readAirThermometer() {
-    // read as fahrenheit
-    Serial.println(dht.readTemperature());
+    // true -> read as fahrenheit
+    Serial.println(dht.readTemperature(true));
 }
 
 /* Read the humidity using a DHT11 Sensor
