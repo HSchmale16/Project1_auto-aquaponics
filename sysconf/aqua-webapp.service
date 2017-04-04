@@ -6,3 +6,6 @@ ExecStart=/home/aqua/ap/webapp/start.R
 WorkingDirectory=/home/aqua/ap/webapp
 User=aqua
 Group=aqua
+
+[Install]
+WantedBy=multi-user.target

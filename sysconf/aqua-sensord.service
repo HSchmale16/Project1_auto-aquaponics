@@ -4,6 +4,8 @@ Description=Sensor Monitoring Daemon For Aquaponics
 [Service]
 ExecStart=/home/aqua/ap/sensord.js
 WorkingDirectory=/home/aqua/ap/
-
 User=aqua
 Group=aqua
+
+[Install]
+WantedBy=multi-user.target
