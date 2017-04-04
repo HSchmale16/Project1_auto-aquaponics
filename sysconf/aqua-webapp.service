@@ -2,6 +2,7 @@
 Description=Aquaponics Web Interface
 
 [Service]
-ExecStart=cd ~aqua/ap/webapp && ./start.R
+ExecStart=/home/aqua/ap/webapp/start.R
+WorkingDirectory=/home/aqua/ap/webapp
 User=aqua
 Group=aqua
