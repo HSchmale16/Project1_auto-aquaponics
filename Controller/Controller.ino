@@ -51,14 +51,14 @@ const int PIN_DHT_POWER = 34;
 const int PIN_DHT_GND   = 30;
 const int PIN_DHT11     = 32;
 // DallasTemperature Sensor
-const int ONE_WIRE_BUS  = 5;
-const int ONE_WIRE_POW  = 6;
-const int ONE_WIRE_GND  = 4;
+const int ONE_WIRE_POW  = 52;
+const int ONE_WIRE_BUS  = 50;
+const int ONE_WIRE_GND  = 48;
 // Distance Finder
-const int PIN_DIS_POW  = 13;
-const int PIN_TRIGGER  = 12;
-const int PIN_ECHO     = 11;
-const int PIN_DIS_GND  = 10;
+const int PIN_DIS_POW  = 47;
+const int PIN_TRIGGER  = 45;
+const int PIN_ECHO     = 43;
+const int PIN_DIS_GND  = 41;
 // Relay control pins
 const int RELAY_BOARD_LOWER = 14;
 const int RELAY_BOARD_UPPER = 22;
