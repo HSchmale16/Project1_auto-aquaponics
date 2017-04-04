@@ -52,21 +52,22 @@ dashboardPage(
         fluidRow(
           column(3,
             numericInput('water_temp_min', 'Minimum Water Temperature',
-                         cc[cc$name == 'water_temp',]$min),
+                         cc[cc$name == 'water_temp',]$low),
             numericInput('air_temp_min'  , 'Minimum Air Temperature',
-                         cc[cc$name == 'air_temp',]$min),
+                         cc[cc$name == 'air_temp',]$low),
             numericInput('water_lvl_min' , 'Minimum Water Level',
-                         cc[cc$name == 'water_level',]$min)
+                         cc[cc$name == 'water_level',]$low)
           ),
           column(3, 
             numericInput('water_temp_max', 'Maximum Water Temperature',
-                         cc[cc$name == 'water_temp',]$max),
+                         cc[cc$name == 'water_temp',]$high),
             numericInput('air_temp_max'  , 'Maxium Air Temperature',
-                         cc[cc$name == 'air_temp',]$max),
+                         cc[cc$name == 'air_temp',]$high),
             numericInput('water_lvl_max' , 'Maximum Water Level',
-                         cc[cc$name == 'water_level',]$max)
+                         cc[cc$name == 'water_level',]$high)
           )
-        )
+        ),
+        actionButton("saveConstraints", "Save Constraints")
       ) # Close Constraints Tab Panel
     )
   )

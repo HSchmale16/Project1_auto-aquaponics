@@ -74,12 +74,7 @@ shinyServer(function(input, output, session) {
     dbWriteTable(con, 'Constraints', a, append=TRUE)
   })
   
-  observeEvent(input$water_lvl_min,  { saveConstraints() })
-  observeEvent(input$water_lvl_max,  { saveConstraints() })
-  observeEvent(input$water_temp_min, { saveConstraints() })
-  observeEvent(input$water_temp_max, { saveConstraints() })
-  observeEvent(input$air_temp_min,   { saveConstraints() })
-  observeEvent(input$air_temp_max,   { saveConstraints() })
+  observeEvent(input$saveConstraints, { saveConstraints() })
 
   # Put together the toggle table for setting the schedule
   output$schedule <- DT::renderDataTable({
@@ -139,17 +134,17 @@ shinyServer(function(input, output, session) {
   #############################
   cc <- loadCurrentConstraints()
   updateNumericInput(session, 'water_level_min',
-                     value = cc[cc$name == 'water_level',]$min)
+                     value = cc[cc$name == 'water_level',]$low)
   updateNumericInput(session, 'water_level_max',
-                     value = cc[cc$name == 'water_level',]$max)
+                     value = cc[cc$name == 'water_level',]$high)
   updateNumericInput(session, 'water_temp_min',
-                     value = cc[cc$name == 'water_temp',]$min)
+                     value = cc[cc$name == 'water_temp',]$low)
   updateNumericInput(session, 'water_temp_max',
-                     value = cc[cc$name == 'water_temp',]$max)
+                     value = cc[cc$name == 'water_temp',]$high)
   updateNumericInput(session, 'air_temp_min',
-                     value = cc[cc$name == 'air_temp',]$min)
+                     value = cc[cc$name == 'air_temp',]$low)
   updateNumericInput(session, 'air_temp_max',
-                     value = cc[cc$name == 'air_temp',]$max)
+                     value = cc[cc$name == 'air_temp',]$high)
   
   
   #############################
