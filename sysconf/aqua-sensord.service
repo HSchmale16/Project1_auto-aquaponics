@@ -1,0 +1,7 @@
+[Unit]
+Description=Sensor Monitoring Daemon For Aquaponics
+
+[Service]
+ExecStart=cd ~aqua/ap/ && ./sensord
+User=aqua
+Group=aqua

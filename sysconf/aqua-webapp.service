@@ -1,0 +1,7 @@
+[Unit]
+Description=Aquaponics Web Interface
+
+[Service]
+ExecStart=cd ~aqua/ap/webapp && ./start.R
+User=aqua
+Group=aqua
