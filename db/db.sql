@@ -60,8 +60,8 @@ CREATE TABLE Constraints (
     id      INTEGER PRIMARY KEY AUTOINCREMENT,
     ts      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     name    VARCHAR(32),
-    low     INTEGER,
-    high    INTEGER
+    low     INTEGER NOT NULL,
+    high    INTEGER NOT NULL
 );
 
 INSERT INTO Constraints (name, low, high) VALUES
