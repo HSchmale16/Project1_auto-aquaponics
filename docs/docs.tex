@@ -1,5 +1,7 @@
 \documentclass[american,12pt]{article}
 
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{hyperref}
 \usepackage{babel}
 \usepackage{csquotes}
@@ -91,19 +93,28 @@ fig~\ref{fig:Software Architecture}.
 \end{figure}
 
 \subsection{Database}
-There is a database meant to facilate communication between each of the segements.
+There is a database meant to facilitate communication between each of the 
+process segments. 
 
 \subsection{The Web App}
 The web app is written using the shiny R framework. This framework allows for 
 analytic dashboard apps to be built quickly and efficiently. It connects to
-the database using the 'DBI' package, which allows for powerful reporting, and
-quick inserts. It also uses the 'shinydashboard' package to provide a very
+the database using the DBI package, which allows for powerful reporting, and
+quick inserts. It also uses the shinydashboard package to provide a very
 pretty dashboard experience.
 
 There are three tabs in the interface. The first tab provides detailed
 analytics of the system, and current stats about the system. The second
 tab provides a scheduling interface that allows for the various pumps
-and lights to be switched on and off. 
+and lights to be switched on and off. The final tab allows for 
+configuring the constraints that will trigger a warning to be sent to
+the operator.
+
+The general stats tab is the first thing viewed when the web interface is
+pulled up, see fig~\ref{fig:data dashboard}. It provides the most recent 
+readings from the system, and
+graphs that show the changes over time for each of the monitored sensors.
+The interactivity of the graphs is provided by the "plot.ly" package.
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{imgs/WebappDashboard}
@@ -111,17 +122,30 @@ and lights to be switched on and off.
 	\caption{The dashboard with some test data placed in it.}
 \end{figure}
 
+The scheduling interface is based off of the parental controls interface
+in windows 7 for allowing users to have access during set times. The blue
+boxes represent the times that it is on, and the white boxes represent the
+times that it is off. The scheduling interface can be viewed in
+fig~\ref{fig:schedular}.
+
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{imgs/sched}
 	\label{fig:schedular}
 	\caption{The scheduling interface for the pumps and lights}
 \end{figure}
 
+The final interface is the constraint configuration manager,
+see fig~\ref{fig:constraints}. 
+This interface allows
+one to set the points at which a warning message is sent to the operator.
+It provides constraints for three sensor values: air and water temperature,
+and water level. The changes are not automatically committed to the database,
+the "save constraints" button must be clicked.
+
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{imgs/constraints}
 	\label{fig:constraints}
-	\caption{The constraint setting page. These are the thresholds that will 
-		signal an operator.}
+	\caption{The constraint configuration manager tab}
 \end{figure}
 
 \subsection{Serial Communication Protocol}

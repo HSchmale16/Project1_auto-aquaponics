@@ -33,13 +33,13 @@ const CommandAction ACTIONS[] = {
     {"rdHumid", readHumidity},
     {"rdAirTm", readAirThermometer},
     // negate the current actions
-    {"nLights", noLights},
-    {"nAirPmp", noAirPump},
-    {"nCiPump", noCircPump},
+    {"nLights", yesLights},
+    {"nAirPmp", yesAirPump},
+    {"nCiPump", yesCircPump},
     // activates the actions
-    {"yLights", yesLights},
-    {"yAirPmp", yesAirPump},
-    {"yCiPump", yesCircPump},
+    {"yLights", noLights},
+    {"yAirPmp", noAirPump},
+    {"yCiPump", noCircPump},
 };
 
 // Total Number of Possible Actions
@@ -104,7 +104,7 @@ void setup() {
     // setup relay pins
     for(int rp = RELAY_BOARD_LOWER; rp <= RELAY_BOARD_UPPER;  rp++){
         pinMode(rp, OUTPUT);
-        digitalWrite(rp, HIGH);
+        digitalWrite(rp, LOW);
     }
     digitalWrite(RELAY_BOARD_LOWER, LOW);
 }   
