@@ -90,6 +90,9 @@ fig~\ref{fig:Software Architecture}.
     \label{fig:Software Architecture}
 \end{figure}
 
+\subsection{Database}
+There is a database meant to facilate communication between each of the segements.
+
 \subsection{The Web App}
 The web app is written using the shiny R framework. This framework allows for 
 analytic dashboard apps to be built quickly and efficiently. It connects to
@@ -106,6 +109,19 @@ and lights to be switched on and off.
 	\includegraphics[width=\linewidth]{imgs/WebappDashboard}
 	\label{fig:data dashboard}
 	\caption{The dashboard with some test data placed in it.}
+\end{figure}
+
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{imgs/sched}
+	\label{fig:schedular}
+	\caption{The scheduling interface for the pumps and lights}
+\end{figure}
+
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{imgs/constraints}
+	\label{fig:constraints}
+	\caption{The constraint setting page. These are the thresholds that will 
+		signal an operator.}
 \end{figure}
 
 \subsection{Serial Communication Protocol}
@@ -232,6 +248,14 @@ finished system.
     \item Drill PVC pipe with hole saw. Start placing holes 7 inches from the
         end, and then 6 inches on center. Continue until you have reached
         the end of the pipe, but still have about 7 inches.
+    \item Drill holes into each of the end caps slightly off center.
+    \item Place the hose barb fittings into the holes that you drilled.
+    \item Glue the end caps to the pipe in such a way that there is a difference
+   	      in heights between the two holes. The lower hole should be the drain
+   	      hole.
+   	\item Place holes in the reservoir to run the hose lines, and sensors.
+   	\item The electrical work is classified as of right now even though anybody
+   	      could figure it out.
 \end{enumerate}
 
 
