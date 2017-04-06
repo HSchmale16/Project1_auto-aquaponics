@@ -7,6 +7,9 @@
 \usepackage{enumitem}
 \usepackage{tikz}
 \usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+
+\DeclareGraphicsExtensions{.png,.jpg,.pdf,.eps}
 
 \usetikzlibrary{patterns,fit,positioning}
 
@@ -22,6 +25,9 @@
 \begin{document}
 \maketitle
 \tableofcontents
+\listoffigures
+
+\newpage
 
 \section{Introduction}
 This manual provides the documentation for my partially automated aquaponics
@@ -58,14 +64,15 @@ lights to keep the fish alive.
     \label{fig:Hardware Architecture}
 \end{figure}
 
-There are 3 main parts in the automated aquaponics system, the database,
-webapp, and the control daemon. The webapp provides details of the current
+There are 3 main parts in the automated aquaponics system, database,
+web app, and control daemon. The web app provides details of the current
 system state over time, scheduling of actions, and the ability to edit
 minor configuration settings. The control daemon requests sensor readings,
 updates the relay configuration, and manages the communication between the
 control board and the database. The final piece of the puzzle is the
-database, it manages communication between the webapp and control daemon in
-a structured method.
+database, it manages communication between the web app and control daemon in
+a structured method. The data flow between the daemons can be seen in 
+fig~\ref{fig:Software Architecture}.
 
 \begin{figure}[h]
     \centering
@@ -81,6 +88,24 @@ a structured method.
     \end{tikzpicture}
     \caption{The software daemons and connections}
     \label{fig:Software Architecture}
+\end{figure}
+
+\subsection{The Web App}
+The web app is written using the shiny R framework. This framework allows for 
+analytic dashboard apps to be built quickly and efficiently. It connects to
+the database using the 'DBI' package, which allows for powerful reporting, and
+quick inserts. It also uses the 'shinydashboard' package to provide a very
+pretty dashboard experience.
+
+There are three tabs in the interface. The first tab provides detailed
+analytics of the system, and current stats about the system. The second
+tab provides a scheduling interface that allows for the various pumps
+and lights to be switched on and off. 
+
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{imgs/WebappDashboard}
+	\label{fig:data dashboard}
+	\caption{The dashboard with some test data placed in it.}
 \end{figure}
 
 \subsection{Serial Communication Protocol}
@@ -223,9 +248,21 @@ This section is still under construction.
 \end{enumerate}
 
 \section{Troubleshooting}
-To be written, so far no errors have been encountered that requires a
-troubleshooting section.
+This section describes various problems that might occur in the 
+aquaponics system and how to resolve them. This section is still
+being expanded as problems arise in the test system and
+resolved.
 
+\begin{itemize}
+	\item Grow Pipe Not Draining
+	\begin{enumerate}
+		\item Check that drain hose is elevated out of water.
+		\item Check that flow rate into pipe is low enough that it can still 
+			drain. Install a valve on to pump input line to reduce the flow 
+			rate.
+	\end{enumerate}
+\end{itemize}
 
+\newpage
 \printbibliography
 \end{document}
