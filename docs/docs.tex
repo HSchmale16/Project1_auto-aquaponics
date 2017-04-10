@@ -16,6 +16,7 @@
 \usetikzlibrary{patterns,fit,positioning}
 
 \DeclareLanguageMapping{american}{american-apa}
+\DeclareNameAlias{default}{last-first}
 
 \title{Automated Aquaponics Developer Setup Manual}
 \author{Henry J Schmale}
@@ -48,14 +49,12 @@ lights to keep the fish alive.
 
 \begin{figure}[h]
     \centering
-    \begin{tikzpicture}[
-            every node/.style={circle,minimum width=15mm,draw}
-        ]
-        \node (a) at (0,0)             {Control Computer};
-        \node (b) at (5,0)             {Arduino};
-        \node[rectangle] (c) at (8,-3) {DST18B20};
-        \node[rectangle] (d) at (8,0)  {DHT11};
-        \node[rectangle] (e) at (8,3)  {Distance Finder};
+    \begin{tikzpicture}
+        \node             (a)             {Control Computer};
+        \node[right=of a] (b)             {Arduino};
+        \node[right=of b,rectangle,draw] (c)  {DST18B20};
+        \node[above=of c,rectangle,draw] (d)  {DHT11};
+        \node[below=of c,rectangle,draw] (e)  {Distance Finder};
 
         \draw (a) -- (b);
         \draw (b) -- (c);
@@ -94,7 +93,8 @@ fig~\ref{fig:Software Architecture}.
 
 \subsection{Database}
 There is a database meant to facilitate communication between each of the 
-process segments. 
+process segments. The database used in this system is SQLite, due to its
+simple setup and high speed. 
 
 \subsection{The Web App}
 The web app is written using the shiny R framework. This framework allows for 
@@ -118,8 +118,8 @@ The interactivity of the graphs is provided by the "plot.ly" package.
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{imgs/WebappDashboard}
-	\label{fig:data dashboard}
 	\caption{The dashboard with some test data placed in it.}
+	\label{fig:data dashboard}
 \end{figure}
 
 The scheduling interface is based off of the parental controls interface
@@ -130,8 +130,8 @@ fig~\ref{fig:schedular}.
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{imgs/sched}
-	\label{fig:schedular}
 	\caption{The scheduling interface for the pumps and lights}
+	\label{fig:schedular}
 \end{figure}
 
 The final interface is the constraint configuration manager,
@@ -144,8 +144,8 @@ the "save constraints" button must be clicked.
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{imgs/constraints}
-	\label{fig:constraints}
 	\caption{The constraint configuration manager tab}
+	\label{fig:constraints}
 \end{figure}
 
 \subsection{Serial Communication Protocol}

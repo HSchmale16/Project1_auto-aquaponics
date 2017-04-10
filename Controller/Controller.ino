@@ -61,7 +61,7 @@ const int PIN_ECHO     = 43;
 const int PIN_DIS_GND  = 41;
 // Relay control pins
 const int RELAY_BOARD_LOWER = 14;
-const int RELAY_BOARD_UPPER = 22;
+const int RELAY_BOARD_UPPER = 18;
 const int PIN_PUMP = RELAY_BOARD_LOWER + 1;
 const int PIN_LIGHTS = RELAY_BOARD_LOWER + 2;
 const int PIN_AIR_PUMP =  RELAY_BOARD_LOWER + 3;
@@ -102,11 +102,12 @@ void setup() {
     dht.begin();
  
     // setup relay pins
-    for(int rp = RELAY_BOARD_LOWER; rp <= RELAY_BOARD_UPPER;  rp++){
+    for(int rp = RELAY_BOARD_LOWER; rp < RELAY_BOARD_UPPER;  rp++){
         pinMode(rp, OUTPUT);
         digitalWrite(rp, LOW);
     }
     digitalWrite(RELAY_BOARD_LOWER, LOW);
+    digitalWrite(RELAY_BOARD_UPPER, HIGH);
 }   
     
  void loop() {
@@ -180,31 +181,31 @@ void yesCircPump() {
     digitalWrite(PIN_PUMP, LOW);
     // the digitalRead needs to be inverted to be in standard notion
     // because of the pull down on the pins.
-    Serial.println(!digitalRead(PIN_PUMP));
+    Serial.println(digitalRead(PIN_PUMP));
 }
 
 void yesLights() {
     digitalWrite(PIN_LIGHTS, LOW);
-    Serial.println(!digitalRead(PIN_LIGHTS));
+    Serial.println(digitalRead(PIN_LIGHTS));
 }
 
 void yesAirPump() {
     digitalWrite(PIN_AIR_PUMP, LOW);
     // because of the pull down on the pins.
-    Serial.println(!digitalRead(PIN_AIR_PUMP));
+    Serial.println(digitalRead(PIN_AIR_PUMP));
 }
 
 void noLights() {
     digitalWrite(PIN_LIGHTS, HIGH);
-    Serial.println(!digitalRead(PIN_LIGHTS));
+    Serial.println(digitalRead(PIN_LIGHTS));
 }
 
 void noAirPump() {
     digitalWrite(PIN_AIR_PUMP, HIGH);
-    Serial.println(!digitalRead(PIN_LIGHTS));
+    Serial.println(digitalRead(PIN_LIGHTS));
 }
 
 void noCircPump() {
     digitalWrite(PIN_PUMP, HIGH);
-    Serial.println(!digitalRead(PIN_PUMP));
+    Serial.println(digitalRead(PIN_PUMP));
 }
