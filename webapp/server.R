@@ -167,8 +167,7 @@ shinyServer(function(input, output, session) {
   output$pAirTemp <- renderPlotly({
     t <- ggplot(data()$AirTemp, aes(x = ts)) +
       geom_line(aes(y = reading)) +
-      ggtitle("Air Temperature") +
-      coord_cartesian(ylim=c(15, 35))
+      ggtitle("Air Temperature")
     ggplotly(t)
   })
   
