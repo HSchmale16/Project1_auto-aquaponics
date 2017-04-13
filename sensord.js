@@ -26,7 +26,7 @@ rsmq.createQueue({qname: config.msgq.recvSensor}, cb_createQueue);
 setInterval(recvMsg, 100);
 // handle setting the actions every 3600 seconds
 setInterval(handleActions, 60 * 60 * 1000);
-
+handleActions();
 
 // Relates the sensor codes to the database codes
 var codes4db = {};
