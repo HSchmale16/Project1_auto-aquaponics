@@ -30,4 +30,6 @@ This section describes the layout of hardware in the project
              \                                    --- Air Pump
               -------- WebCam
 
-
+# Quick Note about the School Network and SSH
+If connecting over the router wired you need to delete the default route for 
+the wired if you want to connect to the internet via the wireless.
