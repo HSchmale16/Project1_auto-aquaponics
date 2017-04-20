@@ -1,0 +1,3 @@
+# Allow aqua to restart it's daemons
+%aqua ALL=(ALL) NOPASSWD: /bin/systemctl restart aqua-sensord.service
+%aqua ALL=(ALL) NOPASSWD: /bin/systemctl restart aqua-webapp.service
