@@ -15,6 +15,7 @@ var RedisSMQ = require('rsmq');
 var config = require('./config/config.json');
 var sqlite3 = require('sqlite3');
 var child_process = require('child_process');
+var nodemailer = require('nodemailer');
 
 var db = new sqlite3.Database(path.join(__dirname + '/db/database.sqlite'));
 
