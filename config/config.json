@@ -11,19 +11,23 @@
         "sensor": [
             {
                 "name": "rWatThm",
-                "code": 1
+                "code": 1,
+                "constraint": "water_temp"
             },
             {
                 "name": "rdWaLvl",
-                "code": 2
+                "code": 2,
+                "constraint": "water_level"
             },
             {
                 "name": "rdHumid",
-                "code": 3
+                "code": 3,
+                "constraint": "humidity"
             },
             {
                 "name": "rdAirTm",
-                "code": 4
+                "code": 4,
+                "constraint": "air_temp"
             }
         ],
         "validSerial": [

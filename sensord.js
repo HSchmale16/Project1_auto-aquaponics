@@ -23,16 +23,23 @@ var rsmq = new RedisSMQ(config.redis);
 rsmq.createQueue({qname: config.msgq.reqAction}, cb_createQueue);
 rsmq.createQueue({qname: config.msgq.recvSensor}, cb_createQueue);
 
-// poll for messages every 100 milliseconds 
-setInterval(recvMsg, 100);
+// poll for messages every 50 milliseconds
+setInterval(recvMsg, 50);
 // handle setting the actions every 3600 seconds
 setInterval(handleActions, 60 * 60 * 1000);
 handleActions();
 
+// update the constraints
+// poll every minute
+setInterval(updateConstraints, 60 * 100);
+
 // Relates the sensor codes to the database codes
 var codes4db = {};
+var constraintCodes = {};
 config.actions.sensor.forEach(function(x){
     codes4db[x.name] = x.code;
+    constraintCodes[x.name] = {low: 0, high: 100}
+    constraintCodes[x.constraint] = x.name;
 });
 var validSerialCodes = config.actions.validSerial;
 
@@ -58,6 +65,9 @@ function cb_HandleSerialData(data) {
             "INSERT INTO Readings(sensorId, reading) VALUES (?, ?);"
         );
         stmt.run(codes4db[fields[0]], fields[1]);
+        if(checkConstraint(fields[0], Number(fields[1]))){
+            handleOutOfBounds(fields[0], fields[0]);
+        }
         return;
     }
     if(fields[0] === 'tCiPump') {
@@ -69,13 +79,22 @@ function cb_HandleSerialData(data) {
     }
 }
 
-/* 
- * Checks if a value is in range if not return other than 0
- * value the val to check
- * code the code of the sensor
+/*
+ * Handles the event if a sensor returns a value that is out of bounds
+ * for the constriant
  */
-function checkConstraintsOfValue(value, code) {
+function handleOutOfBounds(code, value) {
 
+}
+
+// code - sensor read code
+// valy - value to check
+function checkConstraint(code, val) {
+    function between(x, l, h) {
+        return (x >= l) && (x <= h)
+    }
+    var con = constraintCodes[code];
+    return !between(val, con.low, con.high)
 }
 
 function recvMsg() {
@@ -101,10 +120,25 @@ function cb_recvMsg(err, resp) {
         if(validSerialCodes.indexOf(resp.message) !== -1)
             port.write(resp.message + '\n');
         else{
-            // handle alternate states like where we need to do blob counting for counting fish
+            // handle alternate states like where we need to do blob counting
+            // for counting fish
         }
     }
 }
+
+/*
+ * load up the new constraints
+ */
+function updateConstraints() {
+    db.each("SELECT * FROM vCurrentConstraints", (err, row) => {
+        // flip flop from the constraint name to the sensor code
+        constraintCodes[constraintCodes[row.name]] = {
+            low: Number(row.low),
+            high: Number(row.high)
+        }
+    });
+}
+
 
 /*
  * Runs the script for handling the various actions
