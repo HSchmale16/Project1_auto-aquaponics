@@ -19,6 +19,8 @@ var child_process = require('child_process');
 var nodemailer = require('nodemailer');
 var ejs = require('ejs');
 
+var transporter = nodemailer.createTransport(config.email.transporter);
+
 var db = new sqlite3.Database(path.join(__dirname + '/db/database.sqlite'));
 
 var rsmq = new RedisSMQ(config.redis);
@@ -86,7 +88,23 @@ function cb_HandleSerialData(data) {
  * for the constriant
  */
 function handleOutOfBounds(code, value) {
-
+    let data = {
+        sensor: code,
+        value: value,
+        constraints: constraintCodes[code]
+    };
+    ejs.renderFile('./config/out_of_bounds.ejs', data, null,
+        (err, str) => {
+            if(err) return;
+            transporter.sendMail({
+                from: config.email.from,
+                to: config.email.sendTo,
+                subject: "Sensor Out Of Bounds",
+                text: str
+            }, (err, info) => {
+                console.log(info);
+            });
+        });
 }
 
 /**
