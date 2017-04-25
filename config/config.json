@@ -51,7 +51,15 @@
         "port": 6379,
         "ns": "rsmq"
     },
+    // configure settings related the email
     "email": {
-        "sendTo": "hschmale16@gmail.com"
+        // configure the transporter settings for nodemailer
+        "transporter": {
+            "sendmail": true,
+            "newline": "unix",
+            "path": "/usr/sbin/sendmail"
+        },
+        "sendTo": "hschmale16@gmail.com",
+        "from": "aqua@aqua.harrisburgu.edu"
     }
 }

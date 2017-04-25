@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+"use strict";
 
 /*
  * sensord.js
@@ -16,6 +17,7 @@ var config = require('./config/config.json');
 var sqlite3 = require('sqlite3');
 var child_process = require('child_process');
 var nodemailer = require('nodemailer');
+var ejs = require('ejs');
 
 var db = new sqlite3.Database(path.join(__dirname + '/db/database.sqlite'));
 
@@ -87,8 +89,11 @@ function handleOutOfBounds(code, value) {
 
 }
 
-// code - sensor read code
-// valy - value to check
+/**
+ * Checks that a constraint is in bounds
+ * code - sensor code
+ * val - value to check
+ */
 function checkConstraint(code, val) {
     function between(x, l, h) {
         return (x >= l) && (x <= h)
