@@ -19,9 +19,12 @@ dashboardPage(
     radioButtons(
       "timerange", "Time Range To Display",
       choices = c(
-        "All Time"     = 'vSensorReadings',
+        'Todays Readings' = 'vTodaysReadings',
+        'Last 24 Hours' = 'vLast24Hours',
+        "Last 7 Days"  = 'vLast7DaysReadings',
+        "Last 14 Days" = 'vLast14DaysReadings',
         "Last 30 Days" = 'vLast30DaysReadings',
-        "Last 7 Days"  = 'vLast7DaysReadings'
+        "All Time"     = 'vSensorReadings'
       )
     )
   ),
