@@ -46,8 +46,6 @@ loadAllReadings <- function(tbname = 'vSensorReadings') {
   Humidity  <- data.frame(AllReadings[AllReadings$sensorId == 3,])
   AirTemp   <- data.frame(AllReadings[AllReadings$sensorId == 4,])
   
-  WaterLvl$grp <- 
-  
   colsToKeep <- c('ts', 'reading')
   
   
