@@ -17,6 +17,7 @@
 
 \DeclareLanguageMapping{american}{american-apa}
 \DeclareNameAlias{default}{last-first}
+\DeclareGraphicsExtensions{.eps,.png}
 
 \title{Automated Aquaponics Developer Setup Manual}
 \author{Henry J Schmale}
@@ -94,7 +95,20 @@ fig~\ref{fig:Software Architecture}.
 \subsection{Database}
 There is a database meant to facilitate communication between each of the 
 process segments. The database used in this system is SQLite, due to its
-simple setup and high speed. 
+simple setup and high speed. The database model is shown in 
+fig~\ref{fig:database}.
+
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{database.eps}
+	\caption{The database model}
+	\label{fig:database}
+\end{figure}
+
+As shown in fig~\ref{fig:database}, there are 2 major relation ships. The
+actions, and the sensors. The actions contain things that act upon the
+system, while the sensor relation contains details about the system at
+various points.
+
 
 \subsection{The Web App}
 The web app is written using the shiny R framework. This framework allows for 
@@ -166,7 +180,7 @@ link, without worry of the data being muddled.
 \end{description}
 
 The below commands affect the switching of various components. They are set by
-prepending a 'y' or 'n' respectively to switch it on and off.
+prepending a 'y' or 'n' respectively to the command to switch it on and off.
 
 \begin{description}[style=nextline]
     \item[CiPump] switches the circulation pump
@@ -293,6 +307,9 @@ This section is still under construction.
     \item Start pump circulation.
     \item Introduce the fish to the system.
     \item Start plants in the rockwool plugs.
+    \item Wait for the plants to grow.
+    \item Check the fish fairly often.
+    \item Harvest the plants when they look ready.
 \end{enumerate}
 
 \section{Troubleshooting}

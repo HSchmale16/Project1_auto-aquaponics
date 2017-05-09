@@ -13,3 +13,9 @@
 *.aux
 *.fff
 *.gz
+
+# Back up files
+*~
+
+# Generated Graphics
+*.eps
