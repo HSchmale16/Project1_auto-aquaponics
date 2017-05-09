@@ -113,8 +113,8 @@ various points.
 \subsection{The Web App}
 The web app is written using the shiny R framework. This framework allows for 
 analytic dashboard apps to be built quickly and efficiently. It connects to
-the database using the DBI package, which allows for powerful reporting, and
-quick inserts. It also uses the shinydashboard package to provide a very
+the database using the "DBI" package, which allows for powerful reporting, and
+quick inserts. It also uses the "shinydashboard" package to provide a very
 pretty dashboard experience.
 
 There are three tabs in the interface. The first tab provides detailed
@@ -223,10 +223,10 @@ measurement.
 
 \subsubsection{Air Temperature and Humidity}
 The air temperature and humidity is obtained using a DHT series sensor. It can
-use any sensor in this series so long as the code on the microcontroller is
+use any sensor in this series so long as the code on the micro controller is
 updated. The Adafruit Unified Sensor library is used with DHT extension to
 perform this interfacing on the
-microcontroller(\cite{adafruit-unified-sensor,adafruit-dht}). The current system
+micro controller(\cite{adafruit-unified-sensor,adafruit-dht}). The current system
 uses the DHT11 sensor, as this was the most common sensor available at build
 time.
 
@@ -292,8 +292,13 @@ finished system.
    	      in heights between the two holes. The lower hole should be the drain
    	      hole.
    	\item Place holes in the reservoir to run the hose lines, and sensors.
-   	\item The electrical work is classified as of right now even though anybody
-   	      could figure it out.
+   	\item The power flows out of the gfci with the hot side having the switches
+	   	 on it. Out of the relays connect to the hot side of each controlled
+	   	 outlet. Connect up the neutral lines together with a wire nut.
+	\item Connect the arduino up as described in it's sketch. There are
+		constants for each line in the sketch. The relay board's ground
+		and power lines must be connected to the arduino power lines in
+		order to get enough power to switch.
 \end{enumerate}
 
 
