@@ -4,6 +4,19 @@
 -- Henry J Schmale
 -- May 9, 2017
 
+DROP VIEW IF EXISTS vSensorReadings;
+CREATE VIEW IF NOT EXISTS vSensorReadings AS
+SELECT
+    r.id,
+    datetime(ts, 'localtime') as ts,
+    CAST(reading as REAL) as reading,
+    name,
+    description,
+    units,
+    sensorId
+FROM Readings r
+JOIN Sensors s ON s.id = r.sensorId;
+
 
 -- displays last 30 days of sensor readings
 -- we need to cast the output from strftime to int to do greater than

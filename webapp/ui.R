@@ -9,10 +9,13 @@ library(shinydashboard)
 library(plotly)
 library(DBI)
 
+# Load the current constraints to set the defaults for the
+# constraint setting panel.
 con <- dbConnect(RSQLite::SQLite(), "../db/database.sqlite")
 cc <- dbReadTable(con, 'vCurrentConstraints')
 dbDisconnect(con)
 
+# Prepare the dashboard page
 dashboardPage(
   dashboardHeader(title = 'Automated Aquaponics Dashboard'),
   dashboardSidebar(
@@ -30,6 +33,7 @@ dashboardPage(
   ),
   dashboardBody(
     tabsetPanel(
+      # The default panel
       tabPanel("Plots",
         fluidRow(
           # Place Value Boxes For Newest Readings Here
@@ -47,12 +51,18 @@ dashboardPage(
           column(6, plotlyOutput('pAirTemp'))
         )
       ),
+      # Begin The Schedule Panel
       tabPanel("System Schedule Configuration",
-        DT::dataTableOutput('schedule', width='100%'),
-        verbatimTextOutput('selectedInfo')
+        # Make scrollable with the overflow
+        wellPanel(id='tPanel', style='overflow-y:scroll;',
+          DT::dataTableOutput('schedule', width='100%')
+        )
       ),
+      # Begin Constraint Panel
       tabPanel("Constraints",
         fluidRow(
+          # 2x3 inputs with min on left and max on right for each
+          # constraint
           column(3,
             numericInput('water_temp_min', 'Minimum Water Temperature',
                          cc[cc$name == 'water_temp',]$low),
